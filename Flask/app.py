@@ -1,9 +1,21 @@
 import json
 import time
 
-from flask import *
+from flask import Flask, jsonify
+from flask_restful import Api, Resource
 
 app = Flask(__name__)
+api = Api(app)
+
+
+class TodoListApi(Resource):
+    def get(self):
+        with open('_Shared/todolist.json', 'r') as f:
+            data = json.loads(f.read())
+        return jsonify(data)
+
+
+api.add_resource(TodoListApi, "/api")
 
 
 @app.route('/', methods=['GET'])
@@ -22,4 +34,4 @@ def user_page():
 
 
 if __name__ == '__main__':
-    app.run(port=6969)
+    app.run(port=6969, debug=True)
