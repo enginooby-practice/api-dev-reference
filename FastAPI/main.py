@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 import json
+from models import Todo
 
 app = FastAPI(title="To-do List")
+data = []
 data = json.loads(open('_Shared/todolist.json', "r").read())
 
 
@@ -13,6 +15,12 @@ async def getAll():
 @app.get("/api/{id}")
 async def getOne(id: int):
     return findById(id)
+
+
+@app.post("/api")
+async def createOne(todo: Todo):
+    data.append(todo.dict())
+    return data[-1]
 
 
 @app.delete("/api/{id}")
