@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "title": "Todo #1",
     "content": "Content #1",
     "status": "Not started",
@@ -12,6 +13,7 @@
     ]
   },
   {
+    "id": 2,
     "title": "Todo #2",
     "content": "Content #2",
     "status": "In-progress",
@@ -23,6 +25,7 @@
     ]
   },
   {
+    "id": 3,
     "title": "Todo #3",
     "content": "Content #3",
     "status": "Completed",
