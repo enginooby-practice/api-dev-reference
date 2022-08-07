@@ -15,6 +15,12 @@ async def getOne(id: int):
     return findById(id)
 
 
+@app.delete("/api/{id}")
+async def deleteOne(id: int):
+    data.remove(findById(id))
+    return {}
+
+
 def findById(id):
     for element in data:
         if element['id'] == id:
