@@ -1,10 +1,10 @@
-const express = require("express");
-const fs = require("fs");
-const router = express.Router();
+import Express from "express";
+import fs from 'fs'
 
+const router = Express.Router();
 const path = require("path");
-const dataFilePath = path.join(__dirname, "./_Shared/todolist.json");
-const dataJson = fs.readFileSync(dataFilePath);
+const dataFilePath = path.join(__dirname, "../_Shared/todolist.json"); // TODO: Get from root folder
+const dataJson = fs.readFileSync(dataFilePath, 'utf-8');
 let data = []; // for intellisense to display array methods
 data = JSON.parse(dataJson);
 
