@@ -7,11 +7,12 @@ from flask_restful import Api, Resource
 app = Flask(__name__)
 api = Api(app)
 
+with open('_Shared/todolist.json', 'r') as f:
+    data = json.loads(f.read())
+
 
 class TodoListApi(Resource):
     def get(self):
-        with open('_Shared/todolist.json', 'r') as f:
-            data = json.loads(f.read())
         return jsonify(data)
 
 

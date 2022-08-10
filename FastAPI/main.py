@@ -1,8 +1,8 @@
 from fastapi import FastAPI
-import json
 from models import Todo
+import json
 
-app = FastAPI(title="To-do List")
+app = FastAPI(title="Todo List")
 data = []
 data = json.loads(open('_Shared/todolist.json', "r").read())
 
@@ -29,7 +29,7 @@ async def deleteOne(id: int):
     return {}
 
 
-def findById(id):
+def findById(id: int):
     for element in data:
         if element['id'] == id:
             return element

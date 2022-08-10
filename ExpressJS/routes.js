@@ -5,7 +5,7 @@ const router = express.Router();
 const path = require("path");
 const dataFilePath = path.join(__dirname, "./_Shared/todolist.json");
 const dataJson = fs.readFileSync(dataFilePath);
-let data = [];
+let data = []; // for intellisense to display array methods
 data = JSON.parse(dataJson);
 
 const getAll = async (req, res, next) => {
