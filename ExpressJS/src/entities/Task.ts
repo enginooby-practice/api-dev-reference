@@ -1,4 +1,5 @@
 import {Schema, model, connect} from "mongoose"
+import {IEntity} from "./IEntity";
 
 export enum TaskStatus {
     NotStarted = "Not started",
@@ -16,8 +17,8 @@ interface ITask {
     tags: string[],
 }
 
-export class Task {
-    id: number;
+export class Task implements IEntity {
+    id: string;
     isArchived: boolean;
     priority: number;
     status: TaskStatus;
