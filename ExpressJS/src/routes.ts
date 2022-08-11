@@ -1,31 +1,24 @@
 import Express from "express";
-import fs from 'fs'
+import * as path from "path";
+import {MockTaskRepository} from "./repositories/MockTaskRepository";
 
 const router = Express.Router();
-const path = require("path");
-const dataFilePath = path.join(__dirname, "../_Shared/todolist.json"); // TODO: Get from root folder
-const dataJson = fs.readFileSync(dataFilePath, 'utf-8');
-let data = []; // for intellisense to display array methods
-data = JSON.parse(dataJson);
+
+// TODO: Get from root folder
+const taskRepository = new MockTaskRepository(path.join(__dirname, "../_Shared/todolist.json"));
 
 const getAll = async (req, res, next) => {
     try {
+        const tasks = await taskRepository.getAll();
+
         // search query
         const titleQuery = req.query.title;
         if (titleQuery) {
-            const filteredData = data.filter(e => e.title.toUpperCase().includes(titleQuery.toUpperCase()));
-            return res.json(filteredData);
+            const filterTasks = tasks.filter(e => e.title.toUpperCase().includes(titleQuery.toUpperCase()));
+            return res.json(filterTasks);
         }
 
-        return res.json(data);
-        // const countryStat = data.find(stat => stat.country.toUpperCase() == req.params.country.toUpperCase());
-        //
-        // if (!countryStat) {
-        //   const error = new Error(`Data for ${req.params.country} not found`);
-        //   error.status = 404;
-        //   throw error;
-        // }
-        // res.json(countryStat);
+        return res.json(tasks)
     } catch (e) {
         next(e);
     }
