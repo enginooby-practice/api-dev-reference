@@ -2,27 +2,24 @@ import Express from "express";
 import * as path from "path";
 import {MockTaskRepository} from "./repositories/MockTaskRepository";
 
-const router = Express.Router();
-
 // TODO: Get from root folder
 const taskRepository = new MockTaskRepository(path.join(__dirname, "../_Shared/todolist.json"));
 
 const getAll = async (req, res, next) => {
     try {
-        const tasks = await taskRepository.getAll();
-
         // search query
         const titleQuery = req.query.title;
         if (titleQuery) {
-            const filterTasks = tasks.filter(e => e.title.toUpperCase().includes(titleQuery.toUpperCase()));
-            return res.json(filterTasks);
+            return res.json(await taskRepository.findByTitle(titleQuery));
         }
 
-        return res.json(tasks)
+        return res.json(await taskRepository.getAll())
     } catch (e) {
         next(e);
     }
 };
+
+const router = Express.Router();
 
 router
     .route("/api")

@@ -1,7 +1,8 @@
 import {MockBaseRepository} from "./MockBaseRepository";
 import {Task} from "../entities/Task";
+import {ITaskRepository} from "./ITaskRepository";
 
-export class MockTaskRepository extends MockBaseRepository<Task> {
+export class MockTaskRepository extends MockBaseRepository<Task> implements ITaskRepository {
     create(entity: Task): Promise<boolean> {
         return Promise.resolve(false);
     }
@@ -26,4 +27,7 @@ export class MockTaskRepository extends MockBaseRepository<Task> {
         return Promise.resolve(false);
     }
 
+    findByTitle(title: string): Promise<Task[]> {
+        return Promise.resolve(this._entities.filter(e => e.title.toUpperCase().includes(title.toUpperCase())));
+    }
 }
