@@ -30,18 +30,27 @@ export class MockBaseRepository<T extends IEntity> extends BaseRepository<T> {
     }
 
     findById(id: string): Promise<T> {
-        return Promise.resolve(this._entities.find(e => e.id === id));
+        return Promise.resolve(this._entities.find(e => e.id == id));
     }
 
     getAll(): Promise<T[]> {
-        return Promise.resolve([]);
+        return Promise.resolve(this._entities);
     }
 
     update(id: string, entity: T): Promise<boolean> {
         return Promise.resolve(false);
     }
 
-    delete(id: string): Promise<boolean> {
-        return Promise.resolve(false);
+    async delete(id: string): Promise<boolean> {
+        const entity = await this.findById(id);
+
+        for (let i = 0; i < this._entities.length; i++) {
+            if (this._entities[i] === entity) {
+                this._entities.splice(i, 1);
+                return Promise.resolve(true);
+            }
+        }
+
+        return Promise.reject(new Error("Entity not found."));
     }
 }
