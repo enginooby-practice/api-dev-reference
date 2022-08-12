@@ -21,8 +21,9 @@ export class MockBaseRepository<T extends IEntity> extends CrudRepository<T> {
         )
     }
 
-    create(entity: T): Promise<boolean> {
-        return Promise.resolve(false);
+    async create(entity: T): Promise<boolean> {
+        this.entities.push(entity);
+        return Promise.resolve(true);
     }
 
     find(entity: T): Promise<T[]> {
@@ -37,8 +38,17 @@ export class MockBaseRepository<T extends IEntity> extends CrudRepository<T> {
         return Promise.resolve(this.entities);
     }
 
-    update(id: string, entity: T): Promise<boolean> {
-        return Promise.resolve(false);
+    async update(id: string, entity: T): Promise<boolean> {
+        let oldEntity = await this.findById(id);
+
+        if (oldEntity) {
+            let index = this.entities.indexOf(oldEntity);
+            this.entities[index] = entity;
+
+            return Promise.resolve(true);
+        } else {
+            return Promise.reject(new Error("Entity not found."));
+        }
     }
 
     async delete(id: string): Promise<boolean> {
