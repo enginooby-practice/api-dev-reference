@@ -44,11 +44,9 @@ export class MockBaseRepository<T extends IEntity> extends CrudRepository<T> {
         if (oldEntity) {
             // keep keys that new entity missing from the old entity
             const properties = Object.keys(oldEntity);
-            properties.forEach(prop => {
-                entity[prop] ??= oldEntity[prop]
-            })
+            properties.forEach(prop => entity[prop] ??= oldEntity[prop])
 
-            let index = this.entities.indexOf(oldEntity);
+            const index = this.entities.indexOf(oldEntity);
             this.entities[index] = entity;
 
             return Promise.resolve(true);

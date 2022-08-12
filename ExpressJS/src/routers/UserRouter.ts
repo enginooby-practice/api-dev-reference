@@ -1,7 +1,7 @@
 import Express from "express";
 import {Request, Response, NextFunction} from 'express';
 import * as path from "path";
-import {MockUserRepository} from "../repositories/user/MockUserRepository";
+import {MockUserRepository} from "../repositories/mock/MockUserRepository";
 import {CrudRepository} from "../repositories/base/CrudRepository";
 import {User} from "../entities/User";
 

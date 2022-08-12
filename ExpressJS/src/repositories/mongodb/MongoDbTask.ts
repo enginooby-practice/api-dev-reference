@@ -1,5 +1,5 @@
 import {model, Schema} from "mongoose";
-import {ITask} from "../../../entities/Task";
+import {ITask} from "../../entities/Task";
 
 const taskSchema = new Schema<ITask>({
     id: {type: Number, required: false},

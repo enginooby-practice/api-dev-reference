@@ -2,7 +2,7 @@ import {IEntity} from "../../entities/IEntity";
 import {CrudRepository} from "../base/CrudRepository";
 import {MongoClient, Db, Collection} from 'mongodb';
 import {MongoDbDriver} from "./MongoDbDriver";
-import {TaskModel} from "../task/mongodb/MongoDbTask";
+import {TaskModel} from "./MongoDbTask";
 
 export class MongoDbBaseRepository<T extends IEntity> extends CrudRepository<T> {
     protected entities: Collection;
