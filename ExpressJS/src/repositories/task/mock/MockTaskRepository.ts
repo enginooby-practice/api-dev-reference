@@ -1,4 +1,4 @@
-import {MockBaseRepository} from "./MockBaseRepository";
+import {MockBaseRepository} from "../../common/MockBaseRepository";
 import {Task} from "../../../entities/Task";
 import {ITaskRepository} from "../ITaskRepository";
 

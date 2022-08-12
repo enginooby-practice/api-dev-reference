@@ -1,8 +1,8 @@
-import {IEntity} from "../../../entities/IEntity";
-import {CrudRepository} from "../../base/CrudRepository";
+import {IEntity} from "../../entities/IEntity";
+import {CrudRepository} from "../base/CrudRepository";
 import {MongoClient, Db, Collection} from 'mongodb';
 import {MongoDbDriver} from "./MongoDbDriver";
-import {TaskModel} from "./MongoDbTask";
+import {TaskModel} from "../task/mongodb/MongoDbTask";
 
 export class MongoDbBaseRepository<T extends IEntity> extends CrudRepository<T> {
     protected entities: Collection;
@@ -57,7 +57,7 @@ export class MongoDbBaseRepository<T extends IEntity> extends CrudRepository<T> 
         const entities: T[] = [];
 
         documents.forEach(e => {
-            entities.push(e.toObject());
+            entities.push(e.toObject() as T);
         })
 
         return Promise.resolve(entities);

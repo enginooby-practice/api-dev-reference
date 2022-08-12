@@ -1,4 +1,4 @@
-import {MongoDbBaseRepository} from "./MongoDbBaseRepository";
+import {MongoDbBaseRepository} from "../../common/MongoDbBaseRepository";
 import {Task} from "../../../entities/Task";
 import {ITaskRepository} from "../ITaskRepository";
 

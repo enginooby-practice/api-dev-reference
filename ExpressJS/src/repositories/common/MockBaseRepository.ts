@@ -1,6 +1,6 @@
-import {CrudRepository} from "../../base/CrudRepository";
+import {CrudRepository} from "../base/CrudRepository";
 import fs from "fs";
-import {IEntity} from "../../../entities/IEntity";
+import {IEntity} from "../../entities/IEntity";
 
 /**
  * Fake data from text file or in-memory variable, can be used for testing.
@@ -43,7 +43,7 @@ export class MockBaseRepository<T extends IEntity> extends CrudRepository<T> {
 
         if (oldEntity) {
             let index = this.entities.indexOf(oldEntity);
-            this.entities[index] = entity;
+            this.entities[index] = entity; // TODO: keep keys that new entity missing from the old entity
 
             return Promise.resolve(true);
         } else {
