@@ -1,6 +1,6 @@
+// REFACTOR: duplicated code in routers
 import Express from "express";
 import {Request, Response, NextFunction} from 'express';
-
 import * as path from "path";
 import {MockTaskRepository} from "../repositories/task/mock/MockTaskRepository";
 import {ITaskRepository} from "../repositories/task/ITaskRepository";
@@ -53,7 +53,7 @@ const createOne = async (req: Request, res: Response, next: NextFunction) => {
 const updateOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const updatingKeys = Object.keys(req.body);
-        const mutableKeys = ["id", "title", "status", "is_archived", "priority", "tags"];
+        const mutableKeys = ["title", "status", "is_archived", "priority", "tags"]; // REFACTOR: get property names of a type
         const isRequestValid = updatingKeys.every(key => mutableKeys.includes(key));
 
         if (isRequestValid) {
@@ -68,17 +68,17 @@ const updateOne = async (req: Request, res: Response, next: NextFunction) => {
 }
 
 const PREFIX = "/api/tasks"
-const router = Express.Router();
+export const taskRouter = Express.Router();
 
-router
+taskRouter
     .route(PREFIX)
     .get(getAll)
     .post(createOne)
 
-router
+taskRouter
     .route(`${PREFIX}/:id`)
     .get(getOne)
     .delete(deleteOne)
     .patch(updateOne)
 
-module.exports = router;
+// module.exports = taskRouter;
