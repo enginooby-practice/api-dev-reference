@@ -1,9 +1,12 @@
 import Express from "express";
 import * as path from "path";
 import {MockTaskRepository} from "../repositories/MockTaskRepository";
+import {ITaskRepository} from "../repositories/ITaskRepository";
+import {MongoDbTaskRepository} from "../repositories/MongoDbTaskRepository";
 
-// TODO: Get from root folder
-const taskRepository = new MockTaskRepository(path.join(__dirname, "../../_Shared/todolist.json"));
+let taskRepository: ITaskRepository;
+// taskRepository = new MockTaskRepository(path.join(__dirname, "../../_Shared/todolist.json")); // TODO: Get from root folder
+taskRepository = new MongoDbTaskRepository();
 
 const getAll = async (req, res, next) => {
     try {
