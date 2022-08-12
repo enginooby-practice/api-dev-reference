@@ -1,4 +1,6 @@
 import Express from "express";
+import {Request, Response, NextFunction} from 'express';
+
 import * as path from "path";
 import {MockTaskRepository} from "../repositories/task/mock/MockTaskRepository";
 import {ITaskRepository} from "../repositories/task/ITaskRepository";
@@ -8,12 +10,12 @@ let taskRepository: ITaskRepository;
 taskRepository = new MockTaskRepository(path.join(__dirname, "../../_Shared/todolist.json")); // TODO: Get from root folder
 // taskRepository = new MongoDbTaskRepository();
 
-const getAll = async (req, res, next) => {
+const getAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // search query
         const titleQuery = req.query.title;
         if (titleQuery) {
-            return res.json(await taskRepository.findByTitle(titleQuery));
+            return res.json(await taskRepository.findByTitle(titleQuery as string));
         }
 
         return res.json(await taskRepository.getAll())
@@ -22,7 +24,7 @@ const getAll = async (req, res, next) => {
     }
 };
 
-const getOne = async (req, res, next) => {
+const getOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
         return res.json(await taskRepository.findById(req.params.id))
     } catch (e) {
@@ -30,7 +32,7 @@ const getOne = async (req, res, next) => {
     }
 };
 
-const deleteOne = async (req, res, next) => {
+const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
         return res.json(await taskRepository.delete(req.params.id))
     } catch (e) {
@@ -38,7 +40,7 @@ const deleteOne = async (req, res, next) => {
     }
 };
 
-const createOne = async (req, res, next) => {
+const createOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const succeed = await taskRepository.create(req.body);
         return res.status(201).json({"created": succeed});
@@ -48,10 +50,18 @@ const createOne = async (req, res, next) => {
     }
 }
 
-const updateOne = async (req, res, next) => {
+const updateOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const succeed = await taskRepository.update(req.params.id, req.body);
-        return res.status(200).json({"updated": succeed});
+        const updatingKeys = Object.keys(req.body);
+        const mutableKeys = ["id", "title", "status", "is_archived", "priority", "tags"];
+        const isRequestValid = updatingKeys.every(key => mutableKeys.includes(key));
+
+        if (isRequestValid) {
+            const succeed = await taskRepository.update(req.params.id, req.body);
+            return res.status(200).json({"updated": succeed});
+        } else {
+            throw Error("Invalid updating request (tried updating immutable/non-existing keys).");
+        }
     } catch (e) {
         next(e);
     }
@@ -69,6 +79,6 @@ router
     .route(`${PREFIX}/:id`)
     .get(getOne)
     .delete(deleteOne)
-    .put(updateOne)
+    .patch(updateOne)
 
 module.exports = router;
