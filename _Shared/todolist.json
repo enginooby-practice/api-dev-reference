@@ -2,7 +2,6 @@
   {
     "id": 1,
     "title": "Todo #1",
-    "content": "Content #1",
     "status": "Not started",
     "time_created": "01/08/2022",
     "is_archived": false,
@@ -15,7 +14,6 @@
   {
     "id": 2,
     "title": "Todo #2",
-    "content": "Content #2",
     "status": "In-progress",
     "time_created": "02/08/2022",
     "is_archived": false,
@@ -27,7 +25,6 @@
   {
     "id": 3,
     "title": "Todo #3",
-    "content": "Content #3",
     "status": "Completed",
     "time_created": "03/08/2022",
     "is_archived": true,
