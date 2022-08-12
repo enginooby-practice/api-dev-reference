@@ -1,5 +1,5 @@
-import {IEntity} from "../entities/IEntity";
-import {CrudRepository} from "./base/CrudRepository";
+import {IEntity} from "../../../entities/IEntity";
+import {CrudRepository} from "../../base/CrudRepository";
 import {MongoClient, Db, Collection} from 'mongodb';
 import {MongoDbDriver} from "./MongoDbDriver";
 import {TaskModel} from "./MongoDbTask";

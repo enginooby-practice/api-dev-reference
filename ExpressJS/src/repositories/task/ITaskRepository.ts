@@ -1,6 +1,6 @@
-import {Task} from "../entities/Task";
-import {IWritable} from "./base/IWritable";
-import {IReadable} from "./base/IReadable";
+import {Task} from "../../entities/Task";
+import {IWritable} from "../base/IWritable";
+import {IReadable} from "../base/IReadable";
 
 /**
  * Specific operations for the Task entity.

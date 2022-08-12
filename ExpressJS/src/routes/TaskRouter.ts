@@ -1,8 +1,8 @@
 import Express from "express";
 import * as path from "path";
-import {MockTaskRepository} from "../repositories/MockTaskRepository";
-import {ITaskRepository} from "../repositories/ITaskRepository";
-import {MongoDbTaskRepository} from "../repositories/MongoDbTaskRepository";
+import {MockTaskRepository} from "../repositories/task/mock/MockTaskRepository";
+import {ITaskRepository} from "../repositories/task/ITaskRepository";
+import {MongoDbTaskRepository} from "../repositories/task/mongodb/MongoDbTaskRepository";
 
 let taskRepository: ITaskRepository;
 // taskRepository = new MockTaskRepository(path.join(__dirname, "../../_Shared/todolist.json")); // TODO: Get from root folder
