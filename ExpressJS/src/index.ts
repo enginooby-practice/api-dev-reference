@@ -1,6 +1,8 @@
 import Express from "express";
-import * as path from "path";
+import {Request, Response, NextFunction} from 'express';
 import logger from "morgan";
+import {taskRouter} from "./routers/TaskRouter"
+import {userRouter} from "./routers/UserRouter"
 
 const app = Express();
 const PORT = process.env.PORT || 6969;
@@ -8,18 +10,23 @@ const NODE_ENV = process.env.NODE_ENV || "development";
 
 app.set('port', PORT);
 app.set('env', NODE_ENV);
-app.use(logger('tiny'));
-app.use(Express.json()); // auto parse request to JSON (req.body)
-app.use('/', require(path.join(__dirname, 'routes/TaskRouter')));
 
-app.use((req: Express.Request, res: Express.Response, next) => {
+// Express.json() middleware looks for incoming requests that have a Content-Type header of 'application/json'
+// and puts the properties on req.body to access.
+// ! Must invoke this before any router.
+app.use(Express.json());
+app.use(logger('tiny'));
+app.use(taskRouter);
+app.use(userRouter);
+
+app.use((req: Request, res: Response, next: NextFunction) => {
     const error = new Error(`${req.method} ${req.url} Not Found`);
     // @ts-ignore
     error.status = 404;
     next(error);
 });
 
-app.use((error, req: Express.Request, res: Express.Response, next) => {
+app.use((error, req: Request, res: Response, next: NextFunction) => {
     console.error(error);
     res.status(error.status || 500);
     res.json({
