@@ -1,4 +1,4 @@
-import {CrudRepository} from "./CrudRepository";
+import {CrudRepository} from "./base/CrudRepository";
 import fs from "fs";
 import {IEntity} from "../entities/IEntity";
 
