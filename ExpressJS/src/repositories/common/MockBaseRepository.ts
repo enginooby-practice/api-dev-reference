@@ -42,8 +42,14 @@ export class MockBaseRepository<T extends IEntity> extends CrudRepository<T> {
         let oldEntity = await this.findById(id);
 
         if (oldEntity) {
+            // keep keys that new entity missing from the old entity
+            const properties = Object.keys(oldEntity);
+            properties.forEach(prop => {
+                entity[prop] ??= oldEntity[prop]
+            })
+
             let index = this.entities.indexOf(oldEntity);
-            this.entities[index] = entity; // TODO: keep keys that new entity missing from the old entity
+            this.entities[index] = entity;
 
             return Promise.resolve(true);
         } else {
