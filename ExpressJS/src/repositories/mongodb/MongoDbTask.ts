@@ -1,8 +1,8 @@
 import {model, Schema} from "mongoose";
-import {ITask} from "../../entities/Task";
+import {Task} from "../../entities/Task";
 
-const taskSchema = new Schema<ITask>({
-    id: {type: Number, required: false},
+const taskSchema = new Schema<Task>({
+    id: {type: String, required: false},
     title: {type: String, required: true},
     status: {type: String, required: false}, // ? Create custom Mongoose type from TodoStatus enum
     timeCreated: {type: Date, required: false},
@@ -11,4 +11,4 @@ const taskSchema = new Schema<ITask>({
     tags: {type: [String], required: false}
 })
 
-export const TaskModel = model<ITask>('Task', taskSchema)
+export const TaskModel = model<Task>('Task', taskSchema)

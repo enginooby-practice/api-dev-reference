@@ -6,15 +6,15 @@ export enum TaskStatus {
     Completed = "Completed"
 }
 
-export interface ITask {
-    id: number;
-    title: string,
-    status: TaskStatus,
-    timeCreated: Date,
-    priority: number,
-    isArchived: boolean,
-    tags: string[],
-}
+// export interface ITask {
+//     id: number;
+//     title: string,
+//     status: TaskStatus,
+//     timeCreated: Date,
+//     priority: number,
+//     isArchived: boolean,
+//     tags: string[],
+// }
 
 export class Task implements IEntity {
     id: string;
