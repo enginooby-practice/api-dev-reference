@@ -15,9 +15,9 @@ export class MongoDbBaseRepository<T extends IEntity> extends CrudRepository<T> 
             //     this.entities = db.collection(collectionName);
             // });
 
-            // MongoDbDriver.connect().then(() => {
-            //     this.entities = db.collection(collectionName);
-            // });
+            MongoDbDriver.connect().then(() => {
+                this.entities = db.collection(collectionName);
+            });
         } else {
             MongoDbDriver.connect();
         }
@@ -27,16 +27,29 @@ export class MongoDbBaseRepository<T extends IEntity> extends CrudRepository<T> 
         return Promise.resolve(false);
     }
 
-    delete(id: string): Promise<boolean> {
-        return Promise.resolve(false);
+    async delete(id: string): Promise<boolean> {
+        const result = await TaskModel.deleteOne({id: id});
+
+        if (result.deletedCount > 0) {
+            return Promise.resolve(true);
+        }
+
+        return Promise.reject(new Error('Failed to delete entity.'));
     }
 
     find(entity: T): Promise<T[]> {
         return Promise.resolve([]);
     }
 
-    findById(id: string): Promise<T> {
-        return Promise.resolve(undefined);
+    async findById(id: string): Promise<T> {
+        const document = await TaskModel.findOne({id: id});
+
+        if (document) {
+            const entity = document.toObject() as T;
+            return Promise.resolve(entity);
+        }
+
+        return Promise.reject(new Error("Entity not found."));
     }
 
     async getAll(): Promise<T[]> {
@@ -53,5 +66,4 @@ export class MongoDbBaseRepository<T extends IEntity> extends CrudRepository<T> 
     update(id: string, entity: T): Promise<boolean> {
         return Promise.resolve(false);
     }
-
 }
