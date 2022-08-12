@@ -4,9 +4,11 @@ import * as path from "path";
 import {MockUserRepository} from "../repositories/mock/MockUserRepository";
 import {CrudRepository} from "../repositories/base/CrudRepository";
 import {User} from "../entities/User";
+import {MongoDbUserRepository} from "../repositories/mongodb/MongoDbUserRepository";
 
 let userRepository: CrudRepository<User>;
-userRepository = new MockUserRepository(path.join(__dirname, "../../_Shared/users.json")); // TODO: Get from root folder
+// userRepository = new MockUserRepository(path.join(__dirname, "../../_Shared/users.json")); // TODO: Get from root folder
+userRepository = new MongoDbUserRepository();
 
 const getAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
