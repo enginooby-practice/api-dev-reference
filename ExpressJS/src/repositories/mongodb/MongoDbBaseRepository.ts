@@ -3,11 +3,14 @@ import {CrudRepository} from "../base/CrudRepository";
 import {MongoClient, Db, Collection} from 'mongodb';
 import {MongoDbDriver} from "./MongoDbDriver";
 import {TaskModel} from "./MongoDbTask";
+import {Model} from "mongoose"
 
-export class MongoDbBaseRepository<T extends IEntity> extends CrudRepository<T> {
+export abstract class MongoDbBaseRepository<T extends IEntity> extends CrudRepository<T> {
     protected entities: Collection;
 
-    constructor(db?: Db, collectionName?: string) {
+    protected abstract model(): Model<any>;
+
+    constructor(db?: Db, collectionName?: string,) {
         super();
 
         if (db && collectionName) {
@@ -28,7 +31,7 @@ export class MongoDbBaseRepository<T extends IEntity> extends CrudRepository<T> 
     }
 
     async delete(id: string): Promise<boolean> {
-        const result = await TaskModel.deleteOne({id: id});
+        const result = await this.model().deleteOne({id: id});
 
         if (result.deletedCount > 0) {
             return Promise.resolve(true);
@@ -42,7 +45,7 @@ export class MongoDbBaseRepository<T extends IEntity> extends CrudRepository<T> 
     }
 
     async findById(id: string): Promise<T> {
-        const document = await TaskModel.findOne({id: id});
+        const document = await this.model().findOne({id: id});
 
         if (document) {
             const entity = document.toObject() as T;
@@ -53,7 +56,7 @@ export class MongoDbBaseRepository<T extends IEntity> extends CrudRepository<T> 
     }
 
     async getAll(): Promise<T[]> {
-        const documents = await TaskModel.find({});
+        const documents = await this.model().find({});
         const entities: T[] = [];
 
         documents.forEach(e => {
