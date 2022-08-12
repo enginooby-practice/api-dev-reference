@@ -1,12 +1,12 @@
-import {BaseRepository} from "./BaseRepository";
+import {CrudRepository} from "./CrudRepository";
 import fs from "fs";
 import {IEntity} from "../entities/IEntity";
 
 /**
- * Fake data from text file or variable, can be used for testing.
+ * Fake data from text file or in-memory variable, can be used for testing.
  */
-export class MockBaseRepository<T extends IEntity> extends BaseRepository<T> {
-    protected readonly _entities: Array<T> = [];
+export class MockBaseRepository<T extends IEntity> extends CrudRepository<T> {
+    protected readonly entities: Array<T> = [];
 
     constructor(jsonPath: string) {
         super();
@@ -16,7 +16,7 @@ export class MockBaseRepository<T extends IEntity> extends BaseRepository<T> {
 
         data.forEach(entityObj => {
                 // console.log(entityObj)
-                this._entities.push(entityObj);
+                this.entities.push(entityObj);
             }
         )
     }
@@ -30,11 +30,11 @@ export class MockBaseRepository<T extends IEntity> extends BaseRepository<T> {
     }
 
     findById(id: string): Promise<T> {
-        return Promise.resolve(this._entities.find(e => e.id == id));
+        return Promise.resolve(this.entities.find(e => e.id == id));
     }
 
     getAll(): Promise<T[]> {
-        return Promise.resolve(this._entities);
+        return Promise.resolve(this.entities);
     }
 
     update(id: string, entity: T): Promise<boolean> {
@@ -44,9 +44,9 @@ export class MockBaseRepository<T extends IEntity> extends BaseRepository<T> {
     async delete(id: string): Promise<boolean> {
         const entity = await this.findById(id);
 
-        for (let i = 0; i < this._entities.length; i++) {
-            if (this._entities[i] === entity) {
-                this._entities.splice(i, 1);
+        for (let i = 0; i < this.entities.length; i++) {
+            if (this.entities[i] === entity) {
+                this.entities.splice(i, 1);
                 return Promise.resolve(true);
             }
         }
