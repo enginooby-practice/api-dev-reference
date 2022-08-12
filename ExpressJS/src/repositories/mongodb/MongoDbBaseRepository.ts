@@ -26,9 +26,7 @@ export abstract class MongoDbBaseRepository<T extends IEntity> extends CrudRepos
         }
     }
 
-    create(entity: T): Promise<boolean> {
-        return Promise.resolve(false);
-    }
+    abstract create(entity: T): Promise<boolean>;
 
     async delete(id: string): Promise<boolean> {
         const result = await this.model().deleteOne({id: id});

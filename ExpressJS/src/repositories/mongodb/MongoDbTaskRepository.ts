@@ -9,6 +9,17 @@ export class MongoDbTaskRepository extends MongoDbBaseRepository<Task> implement
         return TaskModel;
     }
 
+    async create(entity: Task): Promise<boolean> {
+        const document = new TaskModel(entity);
+        const result = await document.save();
+
+        if (result) {
+            return Promise.resolve(true);
+        }
+
+        return Promise.reject(new Error("Failed to create."));
+    }
+
     findByTitle(title: string): Promise<Task[]> {
         return Promise.resolve([]);
     }
