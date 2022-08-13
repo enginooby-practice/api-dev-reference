@@ -38,16 +38,6 @@ const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-const createOne = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const succeed = await userRepository.create(req.body);
-        return res.status(201).json({"created": succeed});
-    } catch (e) {
-        // 400
-        next(e);
-    }
-}
-
 const updateOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // ? Allow to pass immutable fields with unchanged values
@@ -66,7 +56,20 @@ const updateOne = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-const login = async (req: Request, res: Response, next: NextFunction) => {
+const signUp = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const newUser = await userRepository.create(req.body);
+        console.log(newUser);
+        const token = await newUser.generateAuthToken();
+
+        return res.status(201).json({newUser, token});
+    } catch (e) {
+        e.status = 400;
+        next(e);
+    }
+}
+
+const signIn = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await userRepository.findByCredentials(req.body.email, req.body.password);
         await user.generateAuthToken();
@@ -84,11 +87,11 @@ export const userRouter = Express.Router();
 userRouter
     .route(PREFIX)
     .get(getAll)
-    .post(createOne)
+    .post(signUp)
 
 userRouter
     .route(`${PREFIX}/login`)
-    .post(login)
+    .post(signIn)
 
 userRouter
     .route(`${PREFIX}/me`)

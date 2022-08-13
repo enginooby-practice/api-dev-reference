@@ -10,15 +10,17 @@ export class MongoDbUserRepository extends MongoDbBaseRepository<User> implement
     }
 
     // REFACTOR: merge code between User & Task by passing model type
-    async create(entity: User): Promise<boolean> {
+    async create(entity: User): Promise<User> {
         const document = new UserModel(entity);
         const result = await document.save();
 
         if (result) {
-            return Promise.resolve(true);
+            // @ts-ignore
+            return Promise.resolve(document.toDto());
         }
 
-        return Promise.reject(new Error("Failed to create."));
+        // throw new Error("Failed to create.");
+        return Promise.reject(new Error(`Failed to create new ${User.name}.`));
     }
 
     async findByCredentials(email: string, password: string): Promise<User> {

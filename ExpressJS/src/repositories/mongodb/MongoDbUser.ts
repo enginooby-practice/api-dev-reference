@@ -9,6 +9,8 @@ const userSchema = new Schema<User>({
     tokens: [String]
 })
 
+
+// TODO: Setup TS typing for schema methods & statics
 userSchema.methods.toDto = function (): User {
     const user = this;
     const userDto = new User();

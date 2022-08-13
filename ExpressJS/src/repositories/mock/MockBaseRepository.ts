@@ -21,9 +21,9 @@ export class MockBaseRepository<T extends IEntity> extends CrudRepository<T> {
         )
     }
 
-    async create(entity: T): Promise<boolean> {
+    async create(entity: T): Promise<T> {
         this.entities.push(entity);
-        return Promise.resolve(true);
+        return Promise.resolve(entity);
     }
 
     find(entity: T): Promise<T[]> {
