@@ -9,7 +9,7 @@ export class User implements IEntity {
     tokens: string[];
 
     async generateAuthToken(): Promise<string> {
-        const token = jwt.sign({email: this.email}, "enginooby");
+        const token = jwt.sign({id: this.id}, "enginooby");
         this.tokens.push(token);
         return Promise.resolve(token);
     }

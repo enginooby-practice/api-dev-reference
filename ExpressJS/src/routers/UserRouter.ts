@@ -5,8 +5,9 @@ import {MockUserRepository} from "../repositories/mock/MockUserRepository";
 import {User} from "../entities/User";
 import {MongoDbUserRepository} from "../repositories/mongodb/MongoDbUserRepository";
 import {IUserRepository} from "../repositories/base/IUserRepository";
+import {authHandler} from "../middleware/auth-handler";
 
-let userRepository: IUserRepository;
+export let userRepository: IUserRepository;
 // userRepository = new MockUserRepository(path.join(__dirname, "../../_Shared/users.json")); // TODO: Get from root folder
 userRepository = new MongoDbUserRepository();
 
@@ -21,6 +22,15 @@ const getAll = async (req: Request, res: Response, next: NextFunction) => {
 const getOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
         return res.json(await userRepository.findById(req.params.id))
+    } catch (e) {
+        next(e);
+    }
+};
+
+const getSignedInProfile = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // @ts-ignore
+        return res.json(req.user);
     } catch (e) {
         next(e);
     }
@@ -85,6 +95,10 @@ userRouter
 userRouter
     .route(`${PREFIX}/login`)
     .post(login)
+
+userRouter
+    .route(`${PREFIX}/me`)
+    .get(authHandler, getSignedInProfile)
 
 userRouter
     .route(`${PREFIX}/:id`)
