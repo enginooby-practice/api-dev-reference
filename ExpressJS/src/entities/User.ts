@@ -13,4 +13,15 @@ export class User implements IEntity {
         this.tokens.push(token);
         return Promise.resolve(token);
     }
+
+    /**
+     * Hide sensitive data when sending responses.
+     * This is a special JS method that is implicitly invoked when passing response: res.send(user)
+     */
+    toJSON() {
+        return {
+            username: this.username,
+            email: this.email,
+        }
+    }
 }
