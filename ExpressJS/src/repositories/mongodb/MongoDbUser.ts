@@ -7,5 +7,15 @@ const userSchema = new Schema<User>({
     password: {type: String, required: true},
     email: {type: String, required: true, unique: true}
 })
- 
+
+userSchema.statics.findByCredentials = async (email: string, password: string) => {
+    const user = await UserModel.findOne({email, password});
+
+    if (!user) {
+        throw new Error("Unable to login.");
+    }
+
+    return user;
+}
+
 export const UserModel = model<User>('User', userSchema)

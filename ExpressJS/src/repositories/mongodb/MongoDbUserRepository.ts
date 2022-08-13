@@ -2,8 +2,9 @@ import {MongoDbBaseRepository} from "./MongoDbBaseRepository";
 import {User} from "../../entities/User";
 import {Model} from "mongoose";
 import {UserModel} from "./MongoDbUser";
+import {IUserRepository} from "../base/IUserRepository";
 
-export class MongoDbUserRepository extends MongoDbBaseRepository<User> {
+export class MongoDbUserRepository extends MongoDbBaseRepository<User> implements IUserRepository {
     protected model(): Model<any> {
         return UserModel;
     }
@@ -18,5 +19,15 @@ export class MongoDbUserRepository extends MongoDbBaseRepository<User> {
         }
 
         return Promise.reject(new Error("Failed to create."));
+    }
+
+    async findByCredentials(email: string, password: string): Promise<User> {
+        // @ts-ignore
+        const user = await this.model().findByCredentials(email, password);
+
+        if (user) {
+            return Promise.resolve(user as User);
+        }
+        // return Promise.resolve(undefined);
     }
 }

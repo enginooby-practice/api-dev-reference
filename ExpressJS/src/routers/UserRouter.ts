@@ -2,11 +2,11 @@ import Express from "express";
 import {Request, Response, NextFunction} from 'express';
 import * as path from "path";
 import {MockUserRepository} from "../repositories/mock/MockUserRepository";
-import {CrudRepository} from "../repositories/base/CrudRepository";
 import {User} from "../entities/User";
 import {MongoDbUserRepository} from "../repositories/mongodb/MongoDbUserRepository";
+import {IUserRepository} from "../repositories/base/IUserRepository";
 
-let userRepository: CrudRepository<User>;
+let userRepository: IUserRepository;
 // userRepository = new MockUserRepository(path.join(__dirname, "../../_Shared/users.json")); // TODO: Get from root folder
 userRepository = new MongoDbUserRepository();
 
@@ -37,7 +37,6 @@ const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
 const createOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const succeed = await userRepository.create(req.body);
-        console.log(req.body)
         return res.status(201).json({"created": succeed});
     } catch (e) {
         // 400
@@ -62,6 +61,15 @@ const updateOne = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
+const login = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = await userRepository.findByCredentials(req.body.email, req.body.password);
+        res.send(user)
+    } catch (e) {
+        next(e);
+    }
+}
+
 const PREFIX = "/api/users"
 export const userRouter = Express.Router();
 
@@ -69,6 +77,10 @@ userRouter
     .route(PREFIX)
     .get(getAll)
     .post(createOne)
+
+userRouter
+    .route(`${PREFIX}/login`)
+    .post(login)
 
 userRouter
     .route(`${PREFIX}/:id`)
