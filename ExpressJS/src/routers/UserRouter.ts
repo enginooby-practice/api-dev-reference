@@ -24,7 +24,6 @@ const getOne = async (req: Request, res: Response, next: NextFunction) => {
 
 const getSignedInProfile = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        // @ts-ignore
         const currentUser = req.user;
         return res.json(currentUser);
     } catch (e) {
@@ -61,7 +60,6 @@ const updateOne = async (req: Request, res: Response, next: NextFunction) => {
 const signUp = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const newUser = await userRepository.create(req.body);
-        console.log(newUser);
         const token = await newUser.generateAuthToken();
 
         return res.status(201).json({newUser, token});
@@ -77,7 +75,7 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
         await user.generateAuthToken();
         await userRepository.save(user);
 
-        res.send(user)
+        res.send(user);
     } catch (e) {
         next(e);
     }
@@ -85,9 +83,7 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
 
 const signOut = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        // @ts-ignore
         const currentUser = req.user;
-        // @ts-ignore
         currentUser.tokens = currentUser.tokens.filter(token => token != req.token);
         await userRepository.save(currentUser);
 
@@ -99,9 +95,7 @@ const signOut = async (req: Request, res: Response, next: NextFunction) => {
 
 const signOutAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        // @ts-ignore
         const currentUser = req.user;
-        // @ts-ignore
         currentUser.tokens = [];
         await userRepository.save(currentUser);
 

@@ -12,13 +12,11 @@ export const authHandler = async (req: Request, res: Response, next: NextFunctio
             throw new Error();
         }
 
-        // @ts-ignore
         req.user = user;
-        // @ts-ignore
         req.token = token;
-        
+
         next();
     } catch (e) {
-        res.status(401).send({error: "Not authenticated."});
+        res.status(401).send({error: "Unauthorized."});
     }
 }
