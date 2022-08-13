@@ -6,24 +6,21 @@ export enum TaskStatus {
     Completed = "Completed"
 }
 
-// export interface ITask {
-//     id: number;
-//     title: string,
-//     status: TaskStatus,
-//     timeCreated: Date,
-//     priority: number,
-//     isArchived: boolean,
-//     tags: string[],
-// }
-
 export class Task implements IEntity {
     id: string;
+    title: string;
+    status: TaskStatus;
+    timeCreated: Date;
     isArchived: boolean;
     priority: number;
-    status: TaskStatus;
     tags: string[];
-    timeCreated: Date;
-    title: string;
+
+    /**
+     * List of fields that can be changed via APIs.
+     */
+    static getMutableKeys(): string[] {
+        return ["title", "status", "is_archived", "priority", "tags"];
+    }
 }
 
 

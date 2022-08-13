@@ -2,6 +2,7 @@
 import Express from "express";
 import {Request, Response, NextFunction} from 'express';
 import {taskRepository} from "../repositories/repository-manager";
+import {Task} from "../entities/Task";
 
 
 const getAll = async (req: Request, res: Response, next: NextFunction) => {
@@ -47,8 +48,7 @@ const createOne = async (req: Request, res: Response, next: NextFunction) => {
 const updateOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const updatingKeys = Object.keys(req.body);
-        const mutableKeys = ["title", "status", "is_archived", "priority", "tags"]; // REFACTOR: get property names of a type
-        const isRequestValid = updatingKeys.every(key => mutableKeys.includes(key));
+        const isRequestValid = updatingKeys.every(key => Task.getMutableKeys().includes(key));
 
         if (isRequestValid) {
             const succeed = await taskRepository.update(req.params.id, req.body);

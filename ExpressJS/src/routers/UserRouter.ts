@@ -2,6 +2,7 @@ import Express from "express";
 import {Request, Response, NextFunction} from 'express';
 import {authHandler} from "../middleware/auth-handler";
 import {userRepository} from "../repositories/repository-manager";
+import {User} from "../entities/User";
 
 // REFACTOR: duplicated try-catch
 
@@ -24,8 +25,7 @@ const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
 const updateOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const updatingKeys = Object.keys(req.body);
-        const mutableKeys = ["username", "password"]; // REFACTOR: get property names of a type
-        const isRequestValid = updatingKeys.every(key => mutableKeys.includes(key));
+        const isRequestValid = updatingKeys.every(key => User.getMutableKeys().includes(key));
 
         if (isRequestValid) {
             const succeed = await userRepository.update(req.currentUser.id, req.body);
