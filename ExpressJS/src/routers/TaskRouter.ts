@@ -1,14 +1,8 @@
 // REFACTOR: duplicated code in routers
 import Express from "express";
 import {Request, Response, NextFunction} from 'express';
-import * as path from "path";
-import {MockTaskRepository} from "../repositories/mock/MockTaskRepository";
-import {ITaskRepository} from "../repositories/base/ITaskRepository";
-import {MongoDbTaskRepository} from "../repositories/mongodb/MongoDbTaskRepository";
+import {taskRepository} from "../repositories/repository-manager";
 
-let taskRepository: ITaskRepository;
-taskRepository = new MockTaskRepository(path.join(__dirname, "../../_Shared/todolist.json")); // TODO: Get from root folder
-// taskRepository = new MongoDbTaskRepository();
 
 const getAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -80,5 +74,3 @@ taskRouter
     .get(getOne)
     .delete(deleteOne)
     .patch(updateOne)
-
-// module.exports = taskRouter;

@@ -6,7 +6,7 @@ export class User implements IEntity {
     username: string;
     password: string;
     email: string;
-    tokens: string[];
+    tokens: string[]; // multiple tokens to allow sign in/up from multiple devices
 
     async generateAuthToken(): Promise<string> {
         const token = jwt.sign({id: this.id}, "enginooby");
