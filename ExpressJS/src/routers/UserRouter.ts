@@ -66,7 +66,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await userRepository.findByCredentials(req.body.email, req.body.password);
         await user.generateAuthToken();
-        await userRepository.update(user.id, user);
+        await userRepository.save(user);
 
         res.send(user)
     } catch (e) {

@@ -5,5 +5,7 @@ export interface IWritable<T extends IEntity> {
 
     update(id: string, entity: T): Promise<boolean>;
 
+    save(entity: T): Promise<boolean>;
+
     delete(id: string): Promise<boolean>;
 }
