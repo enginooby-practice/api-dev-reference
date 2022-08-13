@@ -31,7 +31,7 @@ const getSignedInProfile = async (req: Request, res: Response, next: NextFunctio
 
 const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        return res.json(await userRepository.delete(req.params.id))
+        return res.json(await userRepository.delete(req.currentUser.id))
     } catch (e) {
         next(e);
     }
@@ -47,9 +47,9 @@ const updateOne = async (req: Request, res: Response, next: NextFunction) => {
         if (isRequestValid) {
             const succeed = await userRepository.update(req.params.id, req.body);
             return res.status(200).json({"updated": succeed});
-        } else {
-            throw Error("Invalid updating request (tried updating immutable/non-existing keys).");
         }
+
+        throw new Error("Invalid updating request (tried updating immutable/non-existing keys).");
     } catch (e) {
         next(e);
     }
@@ -124,9 +124,9 @@ userRouter
 userRouter
     .route(`${PREFIX}/me`)
     .get(authHandler, getSignedInProfile)
+    .delete(authHandler, deleteOne)
 
 userRouter
     .route(`${PREFIX}/:id`)
     .get(getOne)
-    .delete(deleteOne)
     .patch(updateOne)
