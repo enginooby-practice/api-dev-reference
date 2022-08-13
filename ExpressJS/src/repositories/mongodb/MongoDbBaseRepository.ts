@@ -43,7 +43,7 @@ export abstract class MongoDbBaseRepository<T extends IEntity> extends CrudRepos
     }
 
     async findById(id: string): Promise<T> {
-        const document = await this.model().findOne({id: id});
+        const document = await this.model().findOne({id});
 
         if (document) {
             const entity = document.toObject() as T;
@@ -64,7 +64,9 @@ export abstract class MongoDbBaseRepository<T extends IEntity> extends CrudRepos
         return Promise.resolve(entities);
     }
 
-    update(id: string, entity: T): Promise<boolean> {
-        return Promise.resolve(false);
+    async update(id: string, entity: T): Promise<boolean> {
+        await this.model().findOneAndUpdate({id}, entity);
+
+        return Promise.resolve(true);
     }
 }
