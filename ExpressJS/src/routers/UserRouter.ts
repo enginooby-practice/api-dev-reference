@@ -5,23 +5,7 @@ import {userRepository} from "../repositories/repository-manager";
 
 // REFACTOR: duplicated try-catch
 
-const getAll = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        return res.json(await userRepository.getAll())
-    } catch (e) {
-        next(e);
-    }
-};
-
-const getOne = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        return res.json(await userRepository.findById(req.params.id))
-    } catch (e) {
-        next(e);
-    }
-};
-
-const getSignedInProfile = async (req: Request, res: Response, next: NextFunction) => {
+const getProfile = async (req: Request, res: Response, next: NextFunction) => {
     try {
         return res.json(req.currentUser);
     } catch (e) {
@@ -39,13 +23,12 @@ const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
 
 const updateOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        // ? Allow to pass immutable fields with unchanged values
         const updatingKeys = Object.keys(req.body);
-        const mutableKeys = ["username", "password", "tokens"]; // REFACTOR: get property names of a type
+        const mutableKeys = ["username", "password"]; // REFACTOR: get property names of a type
         const isRequestValid = updatingKeys.every(key => mutableKeys.includes(key));
 
         if (isRequestValid) {
-            const succeed = await userRepository.update(req.params.id, req.body);
+            const succeed = await userRepository.update(req.currentUser.id, req.body);
             return res.status(200).json({"updated": succeed});
         }
 
@@ -106,7 +89,6 @@ export const userRouter = Express.Router();
 
 userRouter
     .route(PREFIX)
-    .get(getAll)
     .post(signUp)
 
 userRouter
@@ -123,10 +105,6 @@ userRouter
 
 userRouter
     .route(`${PREFIX}/me`)
-    .get(authHandler, getSignedInProfile)
+    .get(authHandler, getProfile)
     .delete(authHandler, deleteOne)
-
-userRouter
-    .route(`${PREFIX}/:id`)
-    .get(getOne)
-    .patch(updateOne)
+    .patch(authHandler, updateOne)
