@@ -46,8 +46,9 @@ const createOne = async (req: Request, res: Response, next: NextFunction) => {
 
 const updateOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        // ? Allow to pass immutable fields with unchanged values
         const updatingKeys = Object.keys(req.body);
-        const mutableKeys = ["username", "password"]; // REFACTOR: get property names of a type
+        const mutableKeys = ["username", "password", "tokens"]; // REFACTOR: get property names of a type
         const isRequestValid = updatingKeys.every(key => mutableKeys.includes(key));
 
         if (isRequestValid) {
@@ -64,6 +65,9 @@ const updateOne = async (req: Request, res: Response, next: NextFunction) => {
 const login = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await userRepository.findByCredentials(req.body.email, req.body.password);
+        await user.generateAuthToken();
+        await userRepository.update(user.id, user);
+
         res.send(user)
     } catch (e) {
         next(e);
