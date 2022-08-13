@@ -2,7 +2,6 @@ import Express from "express";
 import {Request, Response, NextFunction} from 'express';
 import {authHandler} from "../middleware/auth-handler";
 import {userRepository} from "../repositories/repository-manager";
-import {User} from "../entities/User";
 
 // REFACTOR: duplicated try-catch
 
@@ -24,8 +23,7 @@ const getOne = async (req: Request, res: Response, next: NextFunction) => {
 
 const getSignedInProfile = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const currentUser = req.user;
-        return res.json(currentUser);
+        return res.json(req.currentUser);
     } catch (e) {
         next(e);
     }
@@ -83,9 +81,8 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
 
 const signOut = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const currentUser = req.user;
-        currentUser.tokens = currentUser.tokens.filter(token => token != req.token);
-        await userRepository.save(currentUser);
+        req.currentUser.tokens = req.currentUser.tokens.filter(token => token != req.currentToken);
+        await userRepository.save(req.currentUser);
 
         res.send({"message": "Logged out"});
     } catch (e) {
@@ -95,9 +92,8 @@ const signOut = async (req: Request, res: Response, next: NextFunction) => {
 
 const signOutAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const currentUser = req.user;
-        currentUser.tokens = [];
-        await userRepository.save(currentUser);
+        req.currentUser.tokens = [];
+        await userRepository.save(req.currentUser);
 
         res.send({"message": "Logged all out"});
     } catch (e) {

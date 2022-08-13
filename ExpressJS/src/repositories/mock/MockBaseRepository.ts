@@ -3,7 +3,7 @@ import fs from "fs";
 import {IEntity} from "../../entities/IEntity";
 
 /**
- * Fake data from text file or in-memory variable, can be used for testing.
+ * Fake data from text file or in-memory database, can be used for testing.
  */
 export class MockBaseRepository<T extends IEntity> extends CrudRepository<T> {
     protected readonly entities: Array<T> = [];
@@ -13,12 +13,7 @@ export class MockBaseRepository<T extends IEntity> extends CrudRepository<T> {
 
         const dataJson = fs.readFileSync(jsonPath, 'utf-8');
         const data: Array<any> = JSON.parse(dataJson);
-
-        data.forEach(entityObj => {
-                // console.log(entityObj)
-                this.entities.push(entityObj);
-            }
-        )
+        data.forEach(entityObj => this.entities.push(entityObj));
     }
 
     async create(entity: T): Promise<T> {

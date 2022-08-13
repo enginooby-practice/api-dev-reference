@@ -12,8 +12,8 @@ export const authHandler = async (req: Request, res: Response, next: NextFunctio
             throw new Error();
         }
 
-        req.user = user;
-        req.token = token;
+        req.currentUser = user;
+        req.currentToken = token;
 
         next();
     } catch (e) {
