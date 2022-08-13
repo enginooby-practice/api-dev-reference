@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from "express";
 import jwt from "jsonwebtoken";
-import {userRepository} from "../routers/UserRouter";
+import {userRepository} from "../repositories/repository-manager";
 
 export const authHandler = async (req: Request, res: Response, next: NextFunction) => {
     try {

@@ -1,15 +1,9 @@
 import Express from "express";
 import {Request, Response, NextFunction} from 'express';
-import * as path from "path";
-import {MockUserRepository} from "../repositories/mock/MockUserRepository";
-import {User} from "../entities/User";
-import {MongoDbUserRepository} from "../repositories/mongodb/MongoDbUserRepository";
-import {IUserRepository} from "../repositories/base/IUserRepository";
 import {authHandler} from "../middleware/auth-handler";
+import {userRepository} from "../repositories/repository-manager";
 
-export let userRepository: IUserRepository;
-// userRepository = new MockUserRepository(path.join(__dirname, "../../_Shared/users.json")); // TODO: Get from root folder
-userRepository = new MongoDbUserRepository();
+// REFACTOR: duplicated try-catch
 
 const getAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
