@@ -36,10 +36,10 @@ const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
 
 const createOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const succeed = await taskRepository.create(req.body);
-        return res.status(201).json({"created": succeed});
+        const newTask = await taskRepository.create(req.body);
+        return res.status(201).json({"created": newTask});
     } catch (e) {
-        // 400
+        e.status = 400;
         next(e);
     }
 }

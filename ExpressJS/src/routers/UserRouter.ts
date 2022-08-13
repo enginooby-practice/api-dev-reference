@@ -2,6 +2,7 @@ import Express from "express";
 import {Request, Response, NextFunction} from 'express';
 import {authHandler} from "../middleware/auth-handler";
 import {userRepository} from "../repositories/repository-manager";
+import {User} from "../entities/User";
 
 // REFACTOR: duplicated try-catch
 
@@ -24,7 +25,8 @@ const getOne = async (req: Request, res: Response, next: NextFunction) => {
 const getSignedInProfile = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // @ts-ignore
-        return res.json(req.user);
+        const currentUser = req.user;
+        return res.json(currentUser);
     } catch (e) {
         next(e);
     }
@@ -81,6 +83,34 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
+const signOut = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // @ts-ignore
+        const currentUser = req.user;
+        // @ts-ignore
+        currentUser.tokens = currentUser.tokens.filter(token => token != req.token);
+        await userRepository.save(currentUser);
+
+        res.send({"message": "Logged out"});
+    } catch (e) {
+        next(e);
+    }
+}
+
+const signOutAll = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // @ts-ignore
+        const currentUser = req.user;
+        // @ts-ignore
+        currentUser.tokens = [];
+        await userRepository.save(currentUser);
+
+        res.send({"message": "Logged all out"});
+    } catch (e) {
+        next(e);
+    }
+}
+
 const PREFIX = "/api/users"
 export const userRouter = Express.Router();
 
@@ -92,6 +122,14 @@ userRouter
 userRouter
     .route(`${PREFIX}/login`)
     .post(signIn)
+
+userRouter
+    .route(`${PREFIX}/logout`)
+    .post(authHandler, signOut)
+
+userRouter
+    .route(`${PREFIX}/logoutAll`)
+    .post(authHandler, signOutAll)
 
 userRouter
     .route(`${PREFIX}/me`)
