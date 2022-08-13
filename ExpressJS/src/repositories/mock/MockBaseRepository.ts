@@ -50,9 +50,9 @@ export class MockBaseRepository<T extends IEntity> extends CrudRepository<T> {
             this.entities[index] = entity;
 
             return Promise.resolve(true);
-        } else {
-            return Promise.reject(new Error("Entity not found."));
         }
+
+        return Promise.reject(new Error("Entity not found."));
     }
 
     async delete(id: string): Promise<boolean> {

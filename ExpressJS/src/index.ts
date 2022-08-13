@@ -19,11 +19,12 @@ app.use(logger('tiny'));
 app.use(taskRouter);
 app.use(userRouter);
 
+// fallback routers
 app.use((req: Request, res: Response, next: NextFunction) => {
     const error = new Error(`${req.method} ${req.url} Not Found`);
     // @ts-ignore
     error.status = 404;
-    next(error);
+    next(error); // run the next middleware
 });
 
 app.use((error, req: Request, res: Response, next: NextFunction) => {
