@@ -26,7 +26,8 @@ export class MongoDbUserRepository extends MongoDbBaseRepository<User> implement
         const user = await this.model().findByCredentials(email, password);
 
         if (user) {
-            return Promise.resolve(user as User);
+            // return Promise.resolve(user.toObject() as User); // this not work if User class has methods
+            return Promise.resolve(user.toDto());
         }
         // return Promise.resolve(undefined);
     }
