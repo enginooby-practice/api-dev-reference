@@ -1,10 +1,10 @@
 import * as path from "path";
-import {ITaskRepository} from "../repositories/base/ITaskRepository";
-import {IUserRepository} from "../repositories/base/IUserRepository";
-import {MockTaskRepository} from "../repositories/mock/MockTaskRepository";
-import {MockUserRepository} from "../repositories/mock/MockUserRepository";
-import {MongoDbTaskRepository} from "../repositories/mongodb/MongoDbTaskRepository";
-import {MongoDbUserRepository} from "../repositories/mongodb/MongoDbUserRepository";
+import {ITaskRepository} from "./base/ITaskRepository";
+import {IUserRepository} from "./base/IUserRepository";
+import {MockTaskRepository} from "./mock/MockTaskRepository";
+import {MockUserRepository} from "./mock/MockUserRepository";
+import {MongoDbTaskRepository} from "./mongodb/MongoDbTaskRepository";
+import {MongoDbUserRepository} from "./mongodb/MongoDbUserRepository";
 
 enum RepositoryType {Mock, MongoDb}
 

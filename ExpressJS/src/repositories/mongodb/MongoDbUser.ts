@@ -2,12 +2,14 @@ import {model, Schema} from "mongoose";
 import {User} from "../../entities/User";
 
 const userSchema = new Schema<User>({
-    id: {type: String, required: false},
-    username: {type: String, required: true, unique: true},
-    password: {type: String, required: true},
-    email: {type: String, required: true, unique: true},
-    tokens: [String]
-})
+        id: {type: String, required: false, unique: true},
+        username: {type: String, required: true, unique: true},
+        password: {type: String, required: true},
+        email: {type: String, required: true, unique: true},
+        tokens: [String]
+    },
+    {timestamps: true}
+)
 
 
 // TODO: Setup TS typing for schema methods & statics
@@ -33,4 +35,4 @@ userSchema.statics.findByCredentials = async (email: string, password: string) =
     return user;
 }
 
-export const UserModel = model<User>('User', userSchema)
+export const UserModel = model<User>(User.name, userSchema)

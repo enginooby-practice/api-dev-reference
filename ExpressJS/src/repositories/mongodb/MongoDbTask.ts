@@ -11,4 +11,4 @@ const taskSchema = new Schema<Task>({
     tags: {type: [String], required: false}
 })
 
-export const TaskModel = model<Task>('Task', taskSchema)
+export const TaskModel = model<Task>(Task.name, taskSchema)

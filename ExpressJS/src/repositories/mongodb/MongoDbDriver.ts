@@ -11,9 +11,9 @@ export class MongoDbDriver {
     private constructor() {
     }
 
-    public static getInstance() {
+    public static async getInstance() {
         if (!MongoDbDriver.instance && !MongoDbDriver.connected) {
-            MongoDbDriver.connect();
+            await MongoDbDriver.connect();
             MongoDbDriver.instance ??= new MongoDbDriver();
         }
 
@@ -31,7 +31,7 @@ export class MongoDbDriver {
         } as unknown as ConnectionOptions;
 
         return connect(`${connectionUrl}/${databaseName}`, connectionOptions)
-            .then(r => console.log(">>> Connected to MongoDB database."))
+            .then(() => console.log(">>> Connected to MongoDB database."))
             .catch(e => console.log(e))
     }
 }
