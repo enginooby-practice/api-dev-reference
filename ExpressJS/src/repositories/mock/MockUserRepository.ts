@@ -6,4 +6,8 @@ export class MockUserRepository extends MockBaseRepository<User> implements IUse
     findByCredentials(email: string, password: string): Promise<User> {
         return Promise.resolve(undefined);
     }
+
+    getTasksById(id: string): Promise<any> {
+        return Promise.resolve(undefined);
+    }
 }

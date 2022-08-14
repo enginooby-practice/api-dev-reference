@@ -3,6 +3,9 @@ import {Task} from "../../entities/Task";
 import {ITaskRepository} from "../base/ITaskRepository";
 import {Model} from "mongoose";
 import {TaskModel} from "./MongoDbTask";
+import {User} from "../../entities/User";
+import {ObjectId} from "mongodb";
+import {userRepository} from "../repositoryManager"; // ? DECOUPLE
 
 export class MongoDbTaskRepository extends MongoDbBaseRepository<Task> implements ITaskRepository {
     protected model(): Model<any> {
@@ -10,6 +13,9 @@ export class MongoDbTaskRepository extends MongoDbBaseRepository<Task> implement
     }
 
     async create(entity: Task): Promise<Task> {
+        const user = await userRepository.findById(entity.ownerId);
+        // @ts-ignore
+        entity.ownerId = new ObjectId(user._id);
         const document = new TaskModel(entity);
         const result = await document.save();
 
@@ -25,5 +31,12 @@ export class MongoDbTaskRepository extends MongoDbBaseRepository<Task> implement
         const documents = await this.model().find({title: {$regex: regex}});
 
         return Promise.resolve(documents);
+    }
+
+    async getUserById(id: string): Promise<User> {
+        const task = await this.model().findOne({id});
+        await task.populate('ownerId');
+
+        return Promise.resolve(task.ownerId);
     }
 }

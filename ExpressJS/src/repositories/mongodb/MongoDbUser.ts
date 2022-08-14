@@ -1,5 +1,6 @@
 import {model, Schema} from "mongoose";
 import {User} from "../../entities/User";
+import {Task} from "../../entities/Task";
 
 const userSchema = new Schema<User>({
         id: {type: String, required: false, unique: true},
@@ -8,11 +9,18 @@ const userSchema = new Schema<User>({
         email: {type: String, required: true, unique: true},
         tokens: [String]
     },
-    {timestamps: true}
-)
+    {
+        timestamps: true,
+    }
+);
 
+// TODO: Setup TS typing for schema virtual property, methods & statics
+userSchema.virtual("tasks", {
+    ref: Task.name,
+    localField: "_id",
+    foreignField: "ownerId"
+});
 
-// TODO: Setup TS typing for schema methods & statics
 userSchema.methods.toDto = function (): User {
     const user = this;
     const userDto = new User();

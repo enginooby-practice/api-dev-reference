@@ -8,6 +8,7 @@ export class Task implements IEntity {
     isArchived: boolean;
     priority: number;
     tags: string[];
+    ownerId: any;
 }
 
 export enum TaskStatus {

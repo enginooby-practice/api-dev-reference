@@ -18,8 +18,8 @@ class TaskService {
         return taskRepository.delete(id);
     }
 
-    async create(task: Task): Promise<Task> {
-        return taskRepository.create(task);
+    async create(task: Task, userId?: any): Promise<Task> {
+        return taskRepository.create({...task, ownerId: userId});
     }
 
     async update(id: string, content: any): Promise<boolean> {

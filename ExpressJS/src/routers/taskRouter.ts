@@ -1,12 +1,13 @@
 import Express from "express";
 import {createOne, deleteOne, getAll, getOne, updateOne} from "../controllers/taskController";
+import {authHandler} from "../middlewares/authHandler";
 
 export const taskRouter = Express.Router();
 
 taskRouter
     .route("/")
     .get(getAll)
-    .post(createOne)
+    .post(authHandler, createOne)
 
 taskRouter
     .route("/:id")

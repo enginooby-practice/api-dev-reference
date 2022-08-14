@@ -33,4 +33,12 @@ export class MongoDbUserRepository extends MongoDbBaseRepository<User> implement
         }
         // return Promise.resolve(undefined);
     }
+
+    async getTasksById(id: string): Promise<any> {
+        const user = await this.model().findOne({id});
+        await user.populate("tasks");
+
+        console.log(user.tasks);
+        return Promise.resolve(user.tasks);
+    }
 }

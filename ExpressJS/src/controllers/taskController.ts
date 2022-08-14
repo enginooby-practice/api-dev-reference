@@ -29,7 +29,7 @@ export const deleteOne = async (req: Request, res: Response, next: NextFunction)
 
 export const createOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        return res.status(201).json(await taskService.create(req.body));
+        return res.status(201).json(await taskService.create(req.body, req.currentUser.id));
     } catch (e) {
         next(e);
     }
