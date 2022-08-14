@@ -6,11 +6,11 @@ export const taskRouter = Express.Router();
 
 taskRouter
     .route("/")
-    .get(getAll)
+    .get(authHandler, getAll)
     .post(authHandler, createOne)
 
 taskRouter
     .route("/:id")
-    .get(getOne)
-    .delete(deleteOne)
-    .patch(updateOne)
+    .get(authHandler, getOne)
+    .delete(authHandler, deleteOne)
+    .patch(authHandler, updateOne)

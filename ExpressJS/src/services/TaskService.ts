@@ -1,28 +1,48 @@
-import {taskRepository} from "../repositories/repositoryManager";
+import {taskRepository, userRepository} from "../repositories/repositoryManager";
 import {Task} from "../entities/Task";
 
 class TaskService {
-    async getAll(titleFilter?: string): Promise<Task[]> {
-        if (titleFilter) {
-            return taskRepository.findByTitle(titleFilter);
+    async doesUserOwnTask(userId: string, taskId: string): Promise<boolean> {
+        const tasks = await userRepository.getTasksById(userId);
+
+        for (const task of tasks) {
+            if (task.id == taskId) {
+                return Promise.resolve(true);
+            }
         }
 
-        return taskRepository.getAll();
+        return Promise.resolve(false);
     }
 
-    async findById(id: string): Promise<Task> {
+    async getAll(userId: any, titleFilter?: string): Promise<Task[]> {
+        if (titleFilter) {
+            // TODO
+            const tasks = await taskRepository.findByTitle(titleFilter);
+            return tasks.filter(task => task.ownerId == userId);
+        }
+
+        return userRepository.getTasksById(userId);
+    }
+
+    async findById(userId: any, id: string): Promise<Task> {
+        if (!(await this.doesUserOwnTask(userId, id))) return;
+
         return taskRepository.findById(id);
     }
 
-    async delete(id: string): Promise<boolean> {
+    async delete(userId: any, id: string): Promise<boolean> {
+        if (!await this.doesUserOwnTask(userId, id)) return;
+
         return taskRepository.delete(id);
     }
 
-    async create(task: Task, userId?: any): Promise<Task> {
+    async create(userId: any, task: Task): Promise<Task> {
         return taskRepository.create({...task, ownerId: userId});
     }
 
-    async update(id: string, content: any): Promise<boolean> {
+    async update(userId: any, id: string, content: any): Promise<boolean> {
+        if (!await this.doesUserOwnTask(userId, id)) return;
+
         const updatingKeys = Object.keys(content);
         const mutableKeys = ["title", "status", "is_archived", "priority", "tags"];
         const canUpdate = updatingKeys.every(key => mutableKeys.includes(key));

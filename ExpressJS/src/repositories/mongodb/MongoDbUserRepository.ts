@@ -3,6 +3,7 @@ import {User} from "../../entities/User";
 import {Model} from "mongoose";
 import {UserModel} from "./MongoDbUser";
 import {IUserRepository} from "../base/IUserRepository";
+import {Task} from "../../entities/Task";
 
 export class MongoDbUserRepository extends MongoDbBaseRepository<User> implements IUserRepository {
     protected model(): Model<any> {
@@ -34,11 +35,11 @@ export class MongoDbUserRepository extends MongoDbBaseRepository<User> implement
         // return Promise.resolve(undefined);
     }
 
-    async getTasksById(id: string): Promise<any> {
+    async getTasksById(id: string): Promise<Task[]> {
         const user = await this.model().findOne({id});
         await user.populate("tasks");
 
-        console.log(user.tasks);
+        // console.log(user.tasks);
         return Promise.resolve(user.tasks);
     }
 }
