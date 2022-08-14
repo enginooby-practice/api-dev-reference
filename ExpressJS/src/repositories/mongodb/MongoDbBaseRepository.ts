@@ -1,8 +1,7 @@
 import {IEntity} from "../../entities/IEntity";
 import {CrudRepository} from "../base/CrudRepository";
-import {MongoClient, Db, Collection} from 'mongodb';
+import {Collection, Db} from 'mongodb';
 import {MongoDbDriver} from "./MongoDbDriver";
-import {TaskModel} from "./MongoDbTask";
 import {Model} from "mongoose"
 
 export abstract class MongoDbBaseRepository<T extends IEntity> extends CrudRepository<T> {

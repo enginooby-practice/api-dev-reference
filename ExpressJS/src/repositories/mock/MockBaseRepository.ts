@@ -3,7 +3,7 @@ import fs from "fs";
 import {IEntity} from "../../entities/IEntity";
 
 /**
- * Fake data from text file or in-memory database, can be used for testing.
+ * Fake data from text file or in-memory database, used for testing.
  */
 export class MockBaseRepository<T extends IEntity> extends CrudRepository<T> {
     protected readonly entities: Array<T> = [];

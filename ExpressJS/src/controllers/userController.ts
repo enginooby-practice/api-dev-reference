@@ -1,12 +1,9 @@
-import Express from "express";
-import {Request, Response, NextFunction} from 'express';
-import {authHandler} from "../middleware/auth-handler";
+// REFACTOR: duplicated try-catch
+import {NextFunction, Request, Response} from "express";
 import {userRepository} from "../repositories/repository-manager";
 import {User} from "../entities/User";
 
-// REFACTOR: duplicated try-catch
-
-const getProfile = async (req: Request, res: Response, next: NextFunction) => {
+export const getProfile = async (req: Request, res: Response, next: NextFunction) => {
     try {
         return res.json(req.currentUser);
     } catch (e) {
@@ -14,7 +11,7 @@ const getProfile = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
         return res.json(await userRepository.delete(req.currentUser.id))
     } catch (e) {
@@ -22,7 +19,7 @@ const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-const updateOne = async (req: Request, res: Response, next: NextFunction) => {
+export const updateOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const updatingKeys = Object.keys(req.body);
         const isRequestValid = updatingKeys.every(key => User.getMutableKeys().includes(key));
@@ -38,7 +35,7 @@ const updateOne = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-const signUp = async (req: Request, res: Response, next: NextFunction) => {
+export const signUp = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const newUser = await userRepository.create(req.body);
         const token = await newUser.generateAuthToken();
@@ -50,7 +47,7 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-const signIn = async (req: Request, res: Response, next: NextFunction) => {
+export const signIn = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await userRepository.findByCredentials(req.body.email, req.body.password);
         await user.generateAuthToken();
@@ -62,7 +59,7 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-const signOut = async (req: Request, res: Response, next: NextFunction) => {
+export const signOut = async (req: Request, res: Response, next: NextFunction) => {
     try {
         req.currentUser.tokens = req.currentUser.tokens.filter(token => token != req.currentToken);
         await userRepository.save(req.currentUser);
@@ -73,7 +70,7 @@ const signOut = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-const signOutAll = async (req: Request, res: Response, next: NextFunction) => {
+export const signOutAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
         req.currentUser.tokens = [];
         await userRepository.save(req.currentUser);
@@ -83,28 +80,3 @@ const signOutAll = async (req: Request, res: Response, next: NextFunction) => {
         next(e);
     }
 }
-
-const PREFIX = "/api/users"
-export const userRouter = Express.Router();
-
-userRouter
-    .route(PREFIX)
-    .post(signUp)
-
-userRouter
-    .route(`${PREFIX}/login`)
-    .post(signIn)
-
-userRouter
-    .route(`${PREFIX}/logout`)
-    .post(authHandler, signOut)
-
-userRouter
-    .route(`${PREFIX}/logoutAll`)
-    .post(authHandler, signOutAll)
-
-userRouter
-    .route(`${PREFIX}/me`)
-    .get(authHandler, getProfile)
-    .delete(authHandler, deleteOne)
-    .patch(authHandler, updateOne)

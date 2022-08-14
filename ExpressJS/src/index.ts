@@ -1,7 +1,7 @@
 import Express from "express";
 import logger from "morgan";
-import {taskRouter} from "./routers/TaskRouter"
-import {userRouter} from "./routers/UserRouter"
+import {taskRouter} from "./routers/taskRouter"
+import {userRouter} from "./routers/userRouter"
 import {fallbackRouter} from "./middleware/fallback-router";
 import {errorHandler} from "./middleware/error-handler";
 
@@ -13,8 +13,8 @@ app.set('env', NODE_ENV);
 
 app.use(Express.json());
 app.use(logger('tiny'));
-app.use(taskRouter);
-app.use(userRouter);
+app.use("/api/tasks", taskRouter);
+app.use("/api/users", userRouter);
 app.use(fallbackRouter);
 app.use(errorHandler);
 
