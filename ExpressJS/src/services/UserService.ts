@@ -1,9 +1,12 @@
-import {userRepository} from "../repositories/repositoryManager";
+import {taskRepository, userRepository} from "../repositories/repositoryManager";
 import {User} from "../entities/User";
-import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";// ? Make an AuthService wrapper if use different auth strategies
 
 class UserService {
     async delete(id: string): Promise<boolean> {
+        const tasks = await userRepository.getTasksById(id);
+        tasks.forEach(task => taskRepository.delete(task.id));
+
         return userRepository.delete(id);
     }
 
@@ -22,7 +25,6 @@ class UserService {
     async signUp(user: User) {
         const newUser = await userRepository.create(user);
         const token = await this.generateAuthToken(newUser);
-        ;
 
         return {newUser, token};
     }
@@ -60,10 +62,10 @@ class UserService {
         const user = await userRepository.findById(decoded.id);
 
         if (!user || !user.tokens.includes(token)) {
-            return Promise.resolve(user);
+            return Promise.reject(undefined);
         }
 
-        return Promise.reject(undefined);
+        return Promise.resolve(user);
     }
 }
 
