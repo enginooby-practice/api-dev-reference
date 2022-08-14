@@ -1,5 +1,6 @@
 import {userRepository} from "../repositories/repositoryManager";
 import {User} from "../entities/User";
+import jwt from "jsonwebtoken";
 
 class UserService {
     async delete(id: string): Promise<boolean> {
@@ -9,9 +10,9 @@ class UserService {
     async update(id: string, content: any): Promise<boolean> {
         const updatingKeys = Object.keys(content);
         const mutableKeys = ["username", "password"];
-        const isRequestValid = updatingKeys.every(key => mutableKeys.includes(key));
+        const canUpdate = updatingKeys.every(key => mutableKeys.includes(key));
 
-        if (isRequestValid) {
+        if (canUpdate) {
             return userRepository.update(id, content); // FIX: not saved
         }
 
@@ -20,14 +21,15 @@ class UserService {
 
     async signUp(user: User) {
         const newUser = await userRepository.create(user);
-        const token = await newUser.generateAuthToken();
+        const token = await this.generateAuthToken(newUser);
+        ;
 
         return {newUser, token};
     }
 
     async signIn(email: string, password: string): Promise<User> {
         const user = await userRepository.findByCredentials(email, password);
-        await user.generateAuthToken();
+        await this.generateAuthToken(user);
         await userRepository.save(user);
 
         return user;
@@ -45,6 +47,23 @@ class UserService {
         await userRepository.save(currentUser);
 
         return {"message": "Logged out all"};
+    }
+
+    private async generateAuthToken(user: User): Promise<string> {
+        const token = jwt.sign({id: user.id}, "enginooby");
+        user.tokens.push(token);
+        return Promise.resolve(token);
+    }
+
+    async authenticate(token: string): Promise<User> {
+        const decoded = jwt.verify(token, "enginooby") as jwt.JwtPayload; // MAGIC
+        const user = await userRepository.findById(decoded.id);
+
+        if (!user || !user.tokens.includes(token)) {
+            return Promise.resolve(user);
+        }
+
+        return Promise.reject(undefined);
     }
 }
 

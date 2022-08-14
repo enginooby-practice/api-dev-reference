@@ -1,14 +1,12 @@
 import {NextFunction, Request, Response} from "express";
-import jwt from "jsonwebtoken";
-import {userRepository} from "../repositories/repositoryManager";
+import {userService} from "../services/UserService";
 
 export const authHandler = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '');
-        const decoded = jwt.verify(token, "enginooby") as jwt.JwtPayload; // MAGIC
-        const user = await userRepository.findById(decoded.id);
+        const user = await userService.authenticate(token);
 
-        if (!user || !user.tokens.includes(token)) {
+        if (!user) {
             throw new Error();
         }
 
