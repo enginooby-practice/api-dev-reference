@@ -1,6 +1,6 @@
-import {MockBaseRepository} from "./MockBaseRepository";
 import {User} from "../../entities/User";
 import {IUserRepository} from "../base/IUserRepository";
+import {MockBaseRepository} from "./MockBaseRepository";
 
 export class MockUserRepository extends MockBaseRepository<User> implements IUserRepository {
     findByCredentials(email: string, password: string): Promise<User> {

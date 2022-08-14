@@ -1,6 +1,6 @@
-import {MockBaseRepository} from "./MockBaseRepository";
 import {Task} from "../../entities/Task";
 import {ITaskRepository} from "../base/ITaskRepository";
+import {MockBaseRepository} from "./MockBaseRepository";
 
 export class MockTaskRepository extends MockBaseRepository<Task> implements ITaskRepository {
     findByTitle(title: string): Promise<Task[]> {

@@ -22,12 +22,12 @@ class TaskService {
         return taskRepository.create(task);
     }
 
-    async update(id: string, content: any) {
+    async update(id: string, content: any): Promise<boolean> {
         const updatingKeys = Object.keys(content);
         const mutableKeys = ["title", "status", "is_archived", "priority", "tags"];
-        const isRequestValid = updatingKeys.every(key => mutableKeys.includes(key));
+        const canUpdate = updatingKeys.every(key => mutableKeys.includes(key));
 
-        if (isRequestValid) {
+        if (canUpdate) {
             return taskRepository.update(id, content);
         }
 

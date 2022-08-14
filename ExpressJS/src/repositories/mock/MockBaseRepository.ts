@@ -1,6 +1,6 @@
-import {CrudRepository} from "../base/CrudRepository";
 import fs from "fs";
 import {IEntity} from "../../entities/IEntity";
+import {CrudRepository} from "../base/CrudRepository";
 
 /**
  * Fake data from text file or in-memory database, used for testing.

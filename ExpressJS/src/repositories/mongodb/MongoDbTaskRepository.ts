@@ -20,7 +20,10 @@ export class MongoDbTaskRepository extends MongoDbBaseRepository<Task> implement
         return Promise.reject(new Error("Failed to create."));
     }
 
-    findByTitle(title: string): Promise<Task[]> {
-        return Promise.resolve([]);
+    async findByTitle(title: string): Promise<Task[]> {
+        const regex = new RegExp(title, 'i') // i for case insensitive
+        const documents = await this.model().find({title: {$regex: regex}});
+
+        return Promise.resolve(documents);
     }
 }
