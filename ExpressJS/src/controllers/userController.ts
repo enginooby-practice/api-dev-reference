@@ -1,6 +1,6 @@
 // REFACTOR: duplicated try-catch
 import {NextFunction, Request, Response} from "express";
-import {userRepository} from "../repositories/repository-manager";
+import {userRepository} from "../repositories/repositoryManager";
 import {User} from "../entities/User";
 
 export const getProfile = async (req: Request, res: Response, next: NextFunction) => {

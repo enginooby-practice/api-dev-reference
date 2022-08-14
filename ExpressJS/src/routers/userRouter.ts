@@ -1,5 +1,5 @@
 import Express from "express";
-import {authHandler} from "../middleware/auth-handler";
+import {authHandler} from "../middlewares/authHandler";
 import {getProfile, signIn, signOut, signOutAll, signUp, deleteOne, updateOne} from "../controllers/userController";
 
 

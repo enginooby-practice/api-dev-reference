@@ -1,6 +1,6 @@
 // ? Custom types for response & error
 import {NextFunction, Request, Response} from "express";
-import {taskRepository} from "../repositories/repository-manager";
+import {taskRepository} from "../repositories/repositoryManager";
 import {Task} from "../entities/Task";
 
 export const getAll = async (req: Request, res: Response, next: NextFunction) => {

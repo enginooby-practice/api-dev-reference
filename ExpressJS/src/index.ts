@@ -2,8 +2,8 @@ import Express from "express";
 import logger from "morgan";
 import {taskRouter} from "./routers/taskRouter"
 import {userRouter} from "./routers/userRouter"
-import {fallbackRouter} from "./middleware/fallback-router";
-import {errorHandler} from "./middleware/error-handler";
+import {fallbackRouter} from "./middlewares/fallbackRouter";
+import {errorHandler} from "./middlewares/errorHandler";
 
 const app = Express();
 const PORT = process.env.PORT || 6969;
