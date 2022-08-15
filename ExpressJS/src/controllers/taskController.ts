@@ -4,6 +4,7 @@ import {NextFunction, Request, Response} from "express";
 import {taskService} from "../services/TaskService";
 import {ITaskSorter, SortOrder, Task, TaskStatus} from "../entities/Task";
 import {IPaginator} from "../entities/IPaginator";
+import {StatusCodes} from "http-status-codes";
 
 export const getAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -11,7 +12,7 @@ export const getAll = async (req: Request, res: Response, next: NextFunction) =>
         const paginator = parsePaginator(req);
         const sorter = parseSorter(req);
 
-        return res.json(await taskService.getAll(req.currentUser.id, req.query.title as string, filter, paginator, sorter));
+        return res.status(StatusCodes.OK).json(await taskService.getAll(req.currentUser.id, req.query.title as string, filter, paginator, sorter));
     } catch (e) {
         next(e);
     }
@@ -62,7 +63,7 @@ function getEnumKeyByValue(myEnum, enumValue): any {
 
 export const getOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        return res.json(await taskService.findById(req.currentUser.id, req.params.id))
+        return res.status(StatusCodes.OK).json(await taskService.findById(req.currentUser.id, req.params.id))
     } catch (e) {
         next(e);
     }
@@ -70,7 +71,7 @@ export const getOne = async (req: Request, res: Response, next: NextFunction) =>
 
 export const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        return res.json(await taskService.delete(req.currentUser.id, req.params.id))
+        return res.status(StatusCodes.OK).json(await taskService.delete(req.currentUser.id, req.params.id))
     } catch (e) {
         next(e);
     }
@@ -78,7 +79,7 @@ export const deleteOne = async (req: Request, res: Response, next: NextFunction)
 
 export const createOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        return res.status(201).json(await taskService.create(req.currentUser.id, req.body));
+        return res.status(StatusCodes.CREATED).json(await taskService.create(req.currentUser.id, req.body));
     } catch (e) {
         next(e);
     }
@@ -86,7 +87,7 @@ export const createOne = async (req: Request, res: Response, next: NextFunction)
 
 export const updateOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        return res.status(200).json(await taskService.update(req.currentUser.id, req.params.id, req.body));
+        return res.status(StatusCodes.OK).json(await taskService.update(req.currentUser.id, req.params.id, req.body));
     } catch (e) {
         next(e);
     }

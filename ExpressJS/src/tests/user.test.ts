@@ -9,6 +9,7 @@ import {app} from "../app";
 import {User} from "../entities/User";
 import {userService} from "../services/UserService";
 import {userRepository} from "../repositories/repositoryManager";
+import {StatusCodes} from "http-status-codes";
 
 const request = require('supertest');
 
@@ -31,7 +32,7 @@ test("Should sign up a new user", async () => {
     const response = await request(app)
         .post("/api/users")
         .send(user1)
-        .expect(201);
+        .expect(StatusCodes.CREATED);
 
     const userInDatabase = await userRepository.findById(user1.id);
     expect(userInDatabase).not.toBeNull();
@@ -49,14 +50,14 @@ test("Shouldn't sign up a new user w/ existing email", async () => {
     await request(app)
         .post("/api/users")
         .send({...user1, "email": userDemo.email})
-        .expect(400);
+        .expect(StatusCodes.BAD_REQUEST);
 })
 
 test("Shouldn't sign up a new user w/ existing username", async () => {
     await request(app)
         .post("/api/users")
         .send({...user1, "username": userDemo.username})
-        .expect(400);
+        .expect(StatusCodes.BAD_REQUEST);
 })
 
 test("Should sign in with valid credentials", async () => {
@@ -68,7 +69,7 @@ test("Should sign in with valid credentials", async () => {
             "email": userDemo.email,
             "password": userDemo.password,
         })
-        .expect(200);
+        .expect(StatusCodes.OK);
 
     // expect(response.body.user.tokens.length).toBe(initialTokenAmount + 1);
 })
@@ -80,7 +81,7 @@ test("Shouldn't sign in with invalid credentials", async () => {
             "email": userDemo.email + "typo",
             "password": userDemo.password,
         })
-        .expect(400);
+        .expect(StatusCodes.BAD_REQUEST);
 })
 
 test("Should get user profile with valid token", async () => {
@@ -88,7 +89,7 @@ test("Should get user profile with valid token", async () => {
         .get("/api/users/me")
         .set("Authorization", `Bearer ${userDemo.tokens[0]}`)
         .send()
-        .expect(200);
+        .expect(StatusCodes.OK);
 })
 
 test("Should delete user with valid token", async () => {
@@ -96,7 +97,7 @@ test("Should delete user with valid token", async () => {
         .delete("/api/users/me")
         .set("Authorization", `Bearer ${userDemo.tokens[0]}`)
         .send()
-        .expect(200);
+        .expect(StatusCodes.OK);
 
     const userInDatabase = await userRepository.findById(userDemo.id);
     expect(userInDatabase).toBeNull();
@@ -107,5 +108,5 @@ test("Shouldn't delete user with invalid token", async () => {
         .delete("/api/users/me")
         .set("Authorization", `Bearer ${userDemo.tokens[0]}typo`)
         .send()
-        .expect(401);
+        .expect(StatusCodes.UNAUTHORIZED);
 })
