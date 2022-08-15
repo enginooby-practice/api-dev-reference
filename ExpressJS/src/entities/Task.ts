@@ -17,10 +17,3 @@ export enum TaskStatus {
     Completed = "Completed"
 }
 
-export interface ITaskFilter {
-    isArchived?: boolean,
-    status?: TaskStatus,
-    priority?: number,
-}
-
-

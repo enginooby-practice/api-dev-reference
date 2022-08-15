@@ -1,5 +1,5 @@
 import {taskRepository, userRepository} from "../repositories/repositoryManager";
-import {ITaskFilter, Task} from "../entities/Task";
+import {Task} from "../entities/Task";
 
 class TaskService {
     async doesUserOwnTask(userId: string, taskId: string): Promise<boolean> {
@@ -13,7 +13,7 @@ class TaskService {
         return Promise.resolve(false);
     }
 
-    async getAll(userId: any, titleFilter?: string, filter?: ITaskFilter): Promise<Task[]> {
+    async getAll(userId: any, titleFilter?: string, filter?: Partial<Task>): Promise<Task[]> {
         if (titleFilter) {
             // TODO
             const tasks = await taskRepository.findByTitle(titleFilter);

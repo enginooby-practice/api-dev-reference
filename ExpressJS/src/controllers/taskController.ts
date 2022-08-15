@@ -2,11 +2,11 @@
 // ? Merge controller & router
 import {NextFunction, Request, Response} from "express";
 import {taskService} from "../services/TaskService";
-import {ITaskFilter, TaskStatus} from "../entities/Task";
+import {Task, TaskStatus} from "../entities/Task";
 
 export const getAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const filter: ITaskFilter = {};
+        const filter: Partial<Task> = {};
         if (req.query.isArchived) filter.isArchived = req.query.isArchived === "true";
         if (req.query.priority) filter.priority = parseInt(req.query.priority as string);
         if (req.query.status) filter.status = TaskStatus[getEnumKeyByValue(TaskStatus, req.query.status as string)];

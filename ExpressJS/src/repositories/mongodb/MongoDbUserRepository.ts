@@ -3,7 +3,7 @@ import {User} from "../../entities/User";
 import {Model} from "mongoose";
 import {UserModel} from "./MongoDbUser";
 import {IUserRepository} from "../base/IUserRepository";
-import {ITaskFilter, Task, TaskStatus} from "../../entities/Task";
+import {Task} from "../../entities/Task";
 
 export class MongoDbUserRepository extends MongoDbBaseRepository<User> implements IUserRepository {
     protected model(): Model<any> {
@@ -35,7 +35,7 @@ export class MongoDbUserRepository extends MongoDbBaseRepository<User> implement
         // return Promise.resolve(undefined);
     }
 
-    async getTasksById(id: string, filter: ITaskFilter = {}): Promise<Task[]> {
+    async getTasksById(id: string, filter: Partial<Task> = {}): Promise<Task[]> {
         const user = await this.model().findOne({id});
 
         await user.populate({
