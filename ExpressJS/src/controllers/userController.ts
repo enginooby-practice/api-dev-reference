@@ -33,6 +33,7 @@ export const signUp = async (req: Request, res: Response, next: NextFunction) =>
     try {
         return res.status(201).json(await userService.signUp(req.body));
     } catch (e) {
+        e.status = 400;
         next(e);
     }
 }
@@ -41,6 +42,7 @@ export const signIn = async (req: Request, res: Response, next: NextFunction) =>
     try {
         res.send(await userService.signIn(req.body.email, req.body.password));
     } catch (e) {
+        e.status = 400;
         next(e);
     }
 }
@@ -55,7 +57,7 @@ export const signOut = async (req: Request, res: Response, next: NextFunction) =
 
 export const signOutAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.send(await userService.signOutAll(req.currentUser, req.currentToken));
+        res.send(await userService.signOutAll(req.currentUser));
     } catch (e) {
         next(e);
     }

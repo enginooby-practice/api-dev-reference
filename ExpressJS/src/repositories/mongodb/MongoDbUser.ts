@@ -23,12 +23,13 @@ userSchema.virtual("tasks", {
 
 userSchema.methods.toDto = function (): User {
     const user = this;
-    const userDto = new User();
-    userDto.id = user.id;
-    userDto.username = user.username;
-    userDto.password = user.password;
-    userDto.email = user.email;
-    userDto.tokens = user.tokens;
+    const userDto = new User(
+        user.id,
+        user.username,
+        user.password,
+        user.email,
+        user.tokens
+    );
 
     return userDto;
 }
