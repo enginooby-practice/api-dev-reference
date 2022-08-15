@@ -22,9 +22,11 @@ class UserService {
         throw Error("Invalid updating request (tried updating immutable/non-existing keys).");
     }
 
+    // TODO: Hash password
     async signUp(user: User) {
         const newUser = await userRepository.create(user);
         const token = await this.generateAuthToken(newUser);
+        await userRepository.save(newUser);
 
         return {newUser, token};
     }
@@ -44,7 +46,7 @@ class UserService {
         return {"message": "Logged out"};
     }
 
-    async signOutAll(currentUser: User, currentToken: string) {
+    async signOutAll(currentUser: User) {
         currentUser.tokens = [];
         await userRepository.save(currentUser);
 
@@ -52,13 +54,14 @@ class UserService {
     }
 
     private async generateAuthToken(user: User): Promise<string> {
-        const token = jwt.sign({id: user.id}, "enginooby");
+        // ? Using process variable causes NodeJS coupling
+        const token = jwt.sign({id: user.id}, process.env.JWT_SECRET_KEY);
         user.tokens.push(token);
         return Promise.resolve(token);
     }
 
     async authenticate(token: string): Promise<User> {
-        const decoded = jwt.verify(token, "enginooby") as jwt.JwtPayload; // MAGIC
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY) as jwt.JwtPayload; // MAGIC
         const user = await userRepository.findById(decoded.id);
 
         if (!user || !user.tokens.includes(token)) {

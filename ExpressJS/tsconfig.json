@@ -18,6 +18,7 @@
     "src/**/*.js"
   ],
   "exclude": [
+    "**/*.(spec|test).ts",
     "node_modules",
     ".vscode",
     ".idea"
