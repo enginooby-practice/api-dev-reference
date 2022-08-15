@@ -37,6 +37,12 @@ export abstract class MongoDbBaseRepository<T extends IEntity> extends CrudRepos
         return Promise.reject(new Error('Failed to delete entity.'));
     }
 
+    async deleteAll(): Promise<boolean> {
+        await this.model().deleteMany();
+
+        return Promise.resolve(true);
+    }
+
     find(entity: T): Promise<T[]> {
         return Promise.resolve([]);
     }
@@ -49,7 +55,7 @@ export abstract class MongoDbBaseRepository<T extends IEntity> extends CrudRepos
             return Promise.resolve(entity);
         }
 
-        return Promise.reject(new Error("Entity not found."));
+        return Promise.resolve(null);
     }
 
     async getAll(): Promise<T[]> {

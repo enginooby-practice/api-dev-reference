@@ -6,6 +6,10 @@ import {CrudRepository} from "../base/CrudRepository";
  * Fake data from text file or in-memory database, used for testing.
  */
 export class MockBaseRepository<T extends IEntity> extends CrudRepository<T> {
+    deleteAll(): Promise<boolean> {
+        throw new Error("Method not implemented.");
+    }
+
     protected readonly entities: Array<T> = [];
 
     constructor(jsonPath: string) {

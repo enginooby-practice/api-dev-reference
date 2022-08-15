@@ -9,4 +9,6 @@ export interface IWritable<T extends IEntity> {
     save(entity: T): Promise<boolean>;
 
     delete(id: string): Promise<boolean>;
+
+    deleteAll(): Promise<boolean>;
 }

@@ -21,4 +21,6 @@ export abstract class CrudRepository<T extends IEntity> implements IWritable<T>,
     async save(entity: T): Promise<boolean> {
         return this.update(entity.id, entity);
     }
+
+    abstract deleteAll(): Promise<boolean>;
 }
