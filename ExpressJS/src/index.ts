@@ -6,8 +6,8 @@ import {fallbackRouter} from "./middlewares/fallbackRouter";
 import {errorHandler} from "./middlewares/errorHandler";
 
 const app = Express();
-const PORT = process.env.PORT || 6969;
-const NODE_ENV = process.env.NODE_ENV || "development";
+const PORT = process.env.PORT;
+const NODE_ENV = process.env.NODE_ENV;
 app.set('port', PORT);
 app.set('env', NODE_ENV);
 
