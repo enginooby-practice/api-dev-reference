@@ -43,17 +43,17 @@ class UserService {
         currentUser.tokens = currentUser.tokens.filter(token => token != currentToken);
         await userRepository.save(currentUser);
 
-        return {"message": "Logged out"};
+        return {message: "Logged out"};
     }
 
     async signOutAll(currentUser: User) {
         currentUser.tokens = [];
         await userRepository.save(currentUser);
 
-        return {"message": "Logged out all"};
+        return {message: "Logged out all"};
     }
 
-    private async generateAuthToken(user: User): Promise<string> {
+    async generateAuthToken(user: User): Promise<string> {
         // ? Using process variable causes NodeJS coupling
         const token = jwt.sign({id: user.id}, process.env.JWT_SECRET_KEY);
         user.tokens.push(token);

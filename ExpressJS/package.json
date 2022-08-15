@@ -8,7 +8,7 @@
     "tsc": "tsc",
     "postinstall": "npm run tsc",
     "dev": "env-cmd -f ./config/dev.env node ./dist/index.js",
-    "test": "env-cmd -f ./config/test.env jest --watch"
+    "test": "env-cmd -f ./config/test.env jest --watch --silent --detectOpenHandles"
   },
   "author": "enginooby",
   "license": "ISC",

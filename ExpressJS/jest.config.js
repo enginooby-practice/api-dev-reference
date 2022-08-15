@@ -11,6 +11,5 @@ module.exports = {
         "^.+\\.jsx?$": "babel-jest",
     },
     moduleNameMapper: {},
-    // moduleDirectories: ["js", ".", "node_modules"],
     moduleDirectories: ["node_modules", __dirname]
 }

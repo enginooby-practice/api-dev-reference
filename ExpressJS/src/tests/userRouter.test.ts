@@ -12,6 +12,7 @@ import {userRepository} from "../repositories/repositoryManager";
 import {StatusCodes} from "http-status-codes";
 
 const request = require('supertest');
+const baseRoute = "/api/users";
 
 let userDemo: User;
 const userDemoData = new User("0", "User", "password", "user@gmail.com");
@@ -30,7 +31,7 @@ beforeEach(async () => {
 
 test("Should sign up a new user", async () => {
     const response = await request(app)
-        .post("/api/users")
+        .post(`${baseRoute}`)
         .send(user1)
         .expect(StatusCodes.CREATED);
 
@@ -48,14 +49,15 @@ test("Should sign up a new user", async () => {
 
 test("Shouldn't sign up a new user w/ existing email", async () => {
     await request(app)
-        .post("/api/users")
+        .post(`${baseRoute}`)
         .send({...user1, "email": userDemo.email})
-        .expect(StatusCodes.BAD_REQUEST);
+        .expect(StatusCodes.BAD_REQUEST)
 })
+
 
 test("Shouldn't sign up a new user w/ existing username", async () => {
     await request(app)
-        .post("/api/users")
+        .post(`${baseRoute}`)
         .send({...user1, "username": userDemo.username})
         .expect(StatusCodes.BAD_REQUEST);
 })
@@ -64,7 +66,7 @@ test("Should sign in with valid credentials", async () => {
     const initialTokenAmount = userDemo.tokens.length;
 
     const response = await request(app)
-        .post("/api/users/login")
+        .post(`${baseRoute}/login`)
         .send({
             "email": userDemo.email,
             "password": userDemo.password,
@@ -76,7 +78,7 @@ test("Should sign in with valid credentials", async () => {
 
 test("Shouldn't sign in with invalid credentials", async () => {
     await request(app)
-        .post("/api/users/login")
+        .post(`${baseRoute}/login`)
         .send({
             "email": userDemo.email + "typo",
             "password": userDemo.password,
@@ -86,7 +88,7 @@ test("Shouldn't sign in with invalid credentials", async () => {
 
 test("Should get user profile with valid token", async () => {
     await request(app)
-        .get("/api/users/me")
+        .get(`${baseRoute}/me`)
         .set("Authorization", `Bearer ${userDemo.tokens[0]}`)
         .send()
         .expect(StatusCodes.OK);
@@ -94,7 +96,7 @@ test("Should get user profile with valid token", async () => {
 
 test("Should delete user with valid token", async () => {
     await request(app)
-        .delete("/api/users/me")
+        .delete(`${baseRoute}/me`)
         .set("Authorization", `Bearer ${userDemo.tokens[0]}`)
         .send()
         .expect(StatusCodes.OK);
@@ -105,7 +107,7 @@ test("Should delete user with valid token", async () => {
 
 test("Shouldn't delete user with invalid token", async () => {
     await request(app)
-        .delete("/api/users/me")
+        .delete(`${baseRoute}/me`)
         .set("Authorization", `Bearer ${userDemo.tokens[0]}typo`)
         .send()
         .expect(StatusCodes.UNAUTHORIZED);
