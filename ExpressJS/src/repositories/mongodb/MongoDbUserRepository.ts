@@ -3,7 +3,7 @@ import {User} from "../../entities/User";
 import {Model} from "mongoose";
 import {UserModel} from "./MongoDbUser";
 import {IUserRepository} from "../base/IUserRepository";
-import {Task} from "../../entities/Task";
+import {ITaskSorter, SortOrder, Task} from "../../entities/Task";
 import {IPaginator} from "../../entities/IPaginator";
 
 export class MongoDbUserRepository extends MongoDbBaseRepository<User> implements IUserRepository {
@@ -36,7 +36,7 @@ export class MongoDbUserRepository extends MongoDbBaseRepository<User> implement
         // return Promise.resolve(undefined);
     }
 
-    async getTasksById(id: string, filter: Partial<Task> = {}, paginator: IPaginator = {}): Promise<Task[]> {
+    async getTasksById(id: string, filter: Partial<Task> = {}, paginator: IPaginator = {}, sorter: ITaskSorter = {}): Promise<Task[]> {
         const user = await this.model().findOne({id});
 
         await user.populate({
@@ -44,7 +44,8 @@ export class MongoDbUserRepository extends MongoDbBaseRepository<User> implement
             match: filter,
             options: {
                 limit: paginator.limit,
-                skip: paginator.page
+                skip: paginator.page,
+                sort: sorter
             }
         });
 

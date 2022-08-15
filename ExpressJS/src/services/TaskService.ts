@@ -1,5 +1,5 @@
 import {taskRepository, userRepository} from "../repositories/repositoryManager";
-import {Task} from "../entities/Task";
+import {ITaskSorter, Task} from "../entities/Task";
 import {IPaginator} from "../entities/IPaginator";
 
 class TaskService {
@@ -14,14 +14,14 @@ class TaskService {
         return Promise.resolve(false);
     }
 
-    async getAll(userId: any, titleFilter?: string, filter?: Partial<Task>, paginator?: IPaginator): Promise<Task[]> {
+    async getAll(userId: any, titleFilter?: string, filter?: Partial<Task>, paginator?: IPaginator, sorter?: ITaskSorter): Promise<Task[]> {
         if (titleFilter) {
             // TODO
             const tasks = await taskRepository.findByTitle(titleFilter);
             return tasks.filter(task => task.ownerId == userId);
         }
 
-        return userRepository.getTasksById(userId, filter, paginator);
+        return userRepository.getTasksById(userId, filter, paginator, sorter);
     }
 
     async findById(userId: any, id: string): Promise<Task> {

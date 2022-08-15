@@ -17,3 +17,17 @@ export enum TaskStatus {
     Completed = "Completed"
 }
 
+// REFACTOR: find a TS utility type to reuse Task type instead of new interface
+export interface ITaskSorter {
+    title?: SortOrder;
+    status?: SortOrder;
+    timeCreated?: SortOrder;
+    isArchived?: SortOrder;
+    priority?: SortOrder;
+}
+
+export enum SortOrder {
+    Esc = 1,
+    Desc = -1
+}
+

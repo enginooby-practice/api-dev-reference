@@ -2,15 +2,16 @@
 // ? Merge controller & router
 import {NextFunction, Request, Response} from "express";
 import {taskService} from "../services/TaskService";
-import {Task, TaskStatus} from "../entities/Task";
+import {ITaskSorter, SortOrder, Task, TaskStatus} from "../entities/Task";
 import {IPaginator} from "../entities/IPaginator";
 
 export const getAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const filter = parseFilter(req);
         const paginator = parsePaginator(req);
+        const sorter = parseSorter(req);
 
-        return res.json(await taskService.getAll(req.currentUser.id, req.query.title as string, filter, paginator));
+        return res.json(await taskService.getAll(req.currentUser.id, req.query.title as string, filter, paginator, sorter));
     } catch (e) {
         next(e);
     }
@@ -18,6 +19,7 @@ export const getAll = async (req: Request, res: Response, next: NextFunction) =>
 
 function parseFilter(req: Request): Partial<Task> {
     const filter: Partial<Task> = {};
+
     if (req.query.isArchived) filter.isArchived = req.query.isArchived === "true";
     if (req.query.priority) filter.priority = parseInt(req.query.priority as string);
     if (req.query.status) filter.status = TaskStatus[getEnumKeyByValue(TaskStatus, req.query.status as string)];
@@ -27,12 +29,29 @@ function parseFilter(req: Request): Partial<Task> {
 
 function parsePaginator(req: Request): IPaginator {
     const paginator: IPaginator = {};
+
     if (req.query.limit) {
         paginator.limit = parseInt(req.query.limit as string);
         if (req.query.page) paginator.page = parseInt(req.query.page as string);
     }
 
     return paginator;
+}
+
+function parseSorter(req: Request): ITaskSorter {
+    const sorter: ITaskSorter = {};
+
+    if (req.query.sortBy) {
+        const criteria = (req.query.sortBy as string).split(' '); // delimiter "+"
+        criteria.forEach((cri) => {
+            const partSplit = cri.split(':');
+            const sortKey = partSplit[0];
+            const sortOrder = partSplit[1].toLowerCase();
+            sorter[sortKey] = sortOrder === "desc" ? SortOrder.Desc : SortOrder.Esc;
+        })
+    }
+
+    return sorter;
 }
 
 // REFACTOR

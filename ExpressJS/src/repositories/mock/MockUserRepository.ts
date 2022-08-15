@@ -1,7 +1,7 @@
 import {User} from "../../entities/User";
 import {IUserRepository} from "../base/IUserRepository";
 import {MockBaseRepository} from "./MockBaseRepository";
-import {Task} from "../../entities/Task";
+import {ITaskSorter, Task} from "../../entities/Task";
 import {IPaginator} from "../../entities/IPaginator";
 
 export class MockUserRepository extends MockBaseRepository<User> implements IUserRepository {
@@ -9,7 +9,7 @@ export class MockUserRepository extends MockBaseRepository<User> implements IUse
         return Promise.resolve(undefined);
     }
 
-    getTasksById(id: string, filter: Partial<Task> = {}, paginator: IPaginator = {}): Promise<Task[]> {
+    getTasksById(id: string, filter: Partial<Task> = {}, paginator: IPaginator = {}, sorter: ITaskSorter = {}): Promise<Task[]> {
         return Promise.resolve(undefined);
     }
 }
