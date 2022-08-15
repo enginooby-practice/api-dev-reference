@@ -3,19 +3,37 @@
 import {NextFunction, Request, Response} from "express";
 import {taskService} from "../services/TaskService";
 import {Task, TaskStatus} from "../entities/Task";
+import {IPaginator} from "../entities/IPaginator";
 
 export const getAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const filter: Partial<Task> = {};
-        if (req.query.isArchived) filter.isArchived = req.query.isArchived === "true";
-        if (req.query.priority) filter.priority = parseInt(req.query.priority as string);
-        if (req.query.status) filter.status = TaskStatus[getEnumKeyByValue(TaskStatus, req.query.status as string)];
+        const filter = parseFilter(req);
+        const paginator = parsePaginator(req);
 
-        return res.json(await taskService.getAll(req.currentUser.id, req.query.title as string, filter));
+        return res.json(await taskService.getAll(req.currentUser.id, req.query.title as string, filter, paginator));
     } catch (e) {
         next(e);
     }
 };
+
+function parseFilter(req: Request): Partial<Task> {
+    const filter: Partial<Task> = {};
+    if (req.query.isArchived) filter.isArchived = req.query.isArchived === "true";
+    if (req.query.priority) filter.priority = parseInt(req.query.priority as string);
+    if (req.query.status) filter.status = TaskStatus[getEnumKeyByValue(TaskStatus, req.query.status as string)];
+
+    return filter;
+}
+
+function parsePaginator(req: Request): IPaginator {
+    const paginator: IPaginator = {};
+    if (req.query.limit) {
+        paginator.limit = parseInt(req.query.limit as string);
+        if (req.query.page) paginator.page = parseInt(req.query.page as string);
+    }
+
+    return paginator;
+}
 
 // REFACTOR
 function getEnumKeyByValue(myEnum, enumValue): any {

@@ -1,5 +1,6 @@
 import {taskRepository, userRepository} from "../repositories/repositoryManager";
 import {Task} from "../entities/Task";
+import {IPaginator} from "../entities/IPaginator";
 
 class TaskService {
     async doesUserOwnTask(userId: string, taskId: string): Promise<boolean> {
@@ -13,14 +14,14 @@ class TaskService {
         return Promise.resolve(false);
     }
 
-    async getAll(userId: any, titleFilter?: string, filter?: Partial<Task>): Promise<Task[]> {
+    async getAll(userId: any, titleFilter?: string, filter?: Partial<Task>, paginator?: IPaginator): Promise<Task[]> {
         if (titleFilter) {
             // TODO
             const tasks = await taskRepository.findByTitle(titleFilter);
             return tasks.filter(task => task.ownerId == userId);
         }
 
-        return userRepository.getTasksById(userId, filter);
+        return userRepository.getTasksById(userId, filter, paginator);
     }
 
     async findById(userId: any, id: string): Promise<Task> {
