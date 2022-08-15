@@ -13,8 +13,14 @@ export class Task implements IEntity {
 
 export enum TaskStatus {
     NotStarted = "Not started",
-    InProgress = "In-process",
+    InProgress = "In progress",
     Completed = "Completed"
+}
+
+export interface ITaskFilter {
+    isArchived?: boolean,
+    status?: TaskStatus,
+    priority?: number,
 }
 
 

@@ -1,10 +1,9 @@
 import {taskRepository, userRepository} from "../repositories/repositoryManager";
-import {Task} from "../entities/Task";
+import {ITaskFilter, Task} from "../entities/Task";
 
 class TaskService {
     async doesUserOwnTask(userId: string, taskId: string): Promise<boolean> {
         const tasks = await userRepository.getTasksById(userId);
-
         for (const task of tasks) {
             if (task.id == taskId) {
                 return Promise.resolve(true);
@@ -14,18 +13,18 @@ class TaskService {
         return Promise.resolve(false);
     }
 
-    async getAll(userId: any, titleFilter?: string): Promise<Task[]> {
+    async getAll(userId: any, titleFilter?: string, filter?: ITaskFilter): Promise<Task[]> {
         if (titleFilter) {
             // TODO
             const tasks = await taskRepository.findByTitle(titleFilter);
             return tasks.filter(task => task.ownerId == userId);
         }
 
-        return userRepository.getTasksById(userId);
+        return userRepository.getTasksById(userId, filter);
     }
 
     async findById(userId: any, id: string): Promise<Task> {
-        if (!(await this.doesUserOwnTask(userId, id))) return;
+        if (!await this.doesUserOwnTask(userId, id)) return;
 
         return taskRepository.findById(id);
     }
@@ -44,7 +43,7 @@ class TaskService {
         if (!await this.doesUserOwnTask(userId, id)) return;
 
         const updatingKeys = Object.keys(content);
-        const mutableKeys = ["title", "status", "is_archived", "priority", "tags"];
+        const mutableKeys = ["title", "status", "isArchived", "priority", "tags"];
         const canUpdate = updatingKeys.every(key => mutableKeys.includes(key));
 
         if (canUpdate) {
