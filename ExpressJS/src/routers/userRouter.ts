@@ -57,7 +57,7 @@ userRouter.get("/me", authHandler, async (req: Request, res: Response, next: Nex
 // update user
 userRouter.patch("/me", authHandler, async (req: Request, res: Response, next: NextFunction) => {
     try {
-        return res.status(StatusCodes.OK).json(await userService.update(req.params.id, req.body));
+        return res.status(StatusCodes.OK).json(await userService.update(req.currentUser.id, req.body));
     } catch (e) {
         next(e);
     }

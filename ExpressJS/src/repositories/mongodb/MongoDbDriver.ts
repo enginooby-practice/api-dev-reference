@@ -26,10 +26,14 @@ export class MongoDbDriver {
             const connectionOptions = {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
+                connectTimeoutMS: 1000
             } as unknown as ConnectionOptions;
 
-            return await connect(process.env.MONGODB_URI, connectionOptions);
-            // return console.log(">>> Connected to MongoDB database.");
+            return await connect(process.env.MONGODB_URI, connectionOptions).then(
+                () => {
+                    console.log(">>> Connected to MongoDB database.");
+                }
+            );
         } catch (e) {
             return console.log(e);
         }

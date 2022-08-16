@@ -9,18 +9,11 @@ export abstract class MongoDbBaseRepository<T extends IEntity> extends CrudRepos
 
     protected abstract model(): Model<any>;
 
-    constructor(db?: Db, collectionName?: string) {
+    constructor() {
         super();
 
-        if (db && collectionName) {
-            // MongoDbDriver.connect().then(function connect(){
-            //     this.entities = db.collection(collectionName);
-            // });
-
-            MongoDbDriver.connect().then(() => {
-                this.entities = db.collection(collectionName);
-            });
-        }
+        MongoDbDriver.connect().then(() => {
+        });
     }
 
     abstract create(entity: T): Promise<T>;
@@ -53,8 +46,8 @@ export abstract class MongoDbBaseRepository<T extends IEntity> extends CrudRepos
     }
 
     async getAll(): Promise<T[]> {
-        const documents = await this.model().find({});
         const entities: T[] = [];
+        const documents = await this.model().find({});
 
         documents.forEach(e => {
             entities.push(e.toObject() as T);
