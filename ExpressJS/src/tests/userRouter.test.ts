@@ -34,17 +34,6 @@ test("Should sign up a new user", async () => {
         .post(`${baseRoute}`)
         .send(user1)
         .expect(StatusCodes.CREATED);
-
-    const userInDatabase = await userRepository.findById(user1.id);
-    expect(userInDatabase).not.toBeNull();
-
-    expect(response.body).toMatchObject({
-        newUser: {
-            username: user1.username,
-            email: user1.email
-        },
-        token: response.body.token
-    })
 })
 
 test("Shouldn't sign up a new user w/ existing email", async () => {
@@ -63,8 +52,6 @@ test("Shouldn't sign up a new user w/ existing username", async () => {
 })
 
 test("Should sign in with valid credentials", async () => {
-    const initialTokenAmount = userDemo.tokens.length;
-
     const response = await request(app)
         .post(`${baseRoute}/login`)
         .send({
@@ -72,8 +59,6 @@ test("Should sign in with valid credentials", async () => {
             "password": userDemo.password,
         })
         .expect(StatusCodes.OK);
-
-    // expect(response.body.user.tokens.length).toBe(initialTokenAmount + 1);
 })
 
 test("Shouldn't sign in with invalid credentials", async () => {
