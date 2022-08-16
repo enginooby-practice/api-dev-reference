@@ -56,7 +56,11 @@ class UserService {
     async generateAuthToken(user: User): Promise<string> {
         // ? Using process variable causes NodeJS coupling
         const token = jwt.sign({id: user.id}, process.env.JWT_SECRET_KEY);
-        user.tokens.push(token);
+
+        const tokens: string[] = user.tokens ?? [];
+        tokens.push(token);
+        user.tokens = tokens;
+        // user.tokens.push(token);
 
         return Promise.resolve(token);
     }
