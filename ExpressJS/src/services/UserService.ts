@@ -57,15 +57,16 @@ class UserService {
         // ? Using process variable causes NodeJS coupling
         const token = jwt.sign({id: user.id}, process.env.JWT_SECRET_KEY);
         user.tokens.push(token);
+
         return Promise.resolve(token);
     }
 
     async authenticate(token: string): Promise<User> {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY) as jwt.JwtPayload; // MAGIC
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY) as jwt.JwtPayload;
         const user = await userRepository.findById(decoded.id);
 
         if (!user || !user.tokens.includes(token)) {
-            return Promise.reject(undefined);
+            return Promise.reject(new Error("Invalid token"));
         }
 
         return Promise.resolve(user);

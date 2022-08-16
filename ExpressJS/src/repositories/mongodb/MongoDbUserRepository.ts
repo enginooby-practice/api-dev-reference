@@ -3,7 +3,7 @@ import {User} from "../../entities/User";
 import {Model} from "mongoose";
 import {UserModel} from "./MongoDbUser";
 import {IUserRepository} from "../base/IUserRepository";
-import {ITaskSorter, SortOrder, Task} from "../../entities/Task";
+import {ITaskSorter, Task} from "../../entities/Task";
 import {IPaginator} from "../../entities/IPaginator";
 
 export class MongoDbUserRepository extends MongoDbBaseRepository<User> implements IUserRepository {

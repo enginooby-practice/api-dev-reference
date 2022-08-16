@@ -6,10 +6,6 @@ import {CrudRepository} from "../base/CrudRepository";
  * Fake data from text file or in-memory database, used for testing.
  */
 export class MockBaseRepository<T extends IEntity> extends CrudRepository<T> {
-    deleteAll(): Promise<boolean> {
-        throw new Error("Method not implemented.");
-    }
-
     protected readonly entities: Array<T> = [];
 
     constructor(jsonPath: string) {
@@ -25,15 +21,11 @@ export class MockBaseRepository<T extends IEntity> extends CrudRepository<T> {
         return Promise.resolve(entity);
     }
 
-    find(entity: T): Promise<T[]> {
-        return Promise.resolve([]);
-    }
-
-    findById(id: string): Promise<T> {
+    async findById(id: string): Promise<T> {
         return Promise.resolve(this.entities.find(e => e.id == id));
     }
 
-    getAll(): Promise<T[]> {
+    async getAll(): Promise<T[]> {
         return Promise.resolve(this.entities);
     }
 
@@ -65,5 +57,11 @@ export class MockBaseRepository<T extends IEntity> extends CrudRepository<T> {
         }
 
         return Promise.reject(new Error("Entity not found."));
+    }
+
+    async deleteAll(): Promise<boolean> {
+        this.entities.length = 0;
+
+        return Promise.resolve(true);
     }
 }

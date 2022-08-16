@@ -1,9 +1,6 @@
 import {ConnectionOptions} from "mongodb";
 import {connect} from "mongoose";
 
-const connectionUrl = "mongodb://127.0.0.1:27017";
-const databaseName = "task-manager";
-
 export class MongoDbDriver {
     private static connected: boolean = false;
     private static instance: MongoDbDriver;
@@ -20,18 +17,21 @@ export class MongoDbDriver {
         return MongoDbDriver.instance;
     }
 
-    public static connect(): Promise<any> {
+    public static async connect() {
         if (MongoDbDriver.connected || MongoDbDriver.instance) return;
 
         MongoDbDriver.connected = true;
 
-        const connectionOptions = {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        } as unknown as ConnectionOptions;
+        try {
+            const connectionOptions = {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+            } as unknown as ConnectionOptions;
 
-        return connect(`${connectionUrl}/${databaseName}`, connectionOptions)
-            .then(() => console.log(">>> Connected to MongoDB database."))
-            .catch(e => console.log(e))
+            return await connect(process.env.MONGODB_URI, connectionOptions);
+            // return console.log(">>> Connected to MongoDB database.");
+        } catch (e) {
+            return console.log(e);
+        }
     }
 }

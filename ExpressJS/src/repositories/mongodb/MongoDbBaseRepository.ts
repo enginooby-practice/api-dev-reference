@@ -9,7 +9,7 @@ export abstract class MongoDbBaseRepository<T extends IEntity> extends CrudRepos
 
     protected abstract model(): Model<any>;
 
-    constructor(db?: Db, collectionName?: string,) {
+    constructor(db?: Db, collectionName?: string) {
         super();
 
         if (db && collectionName) {
@@ -20,8 +20,6 @@ export abstract class MongoDbBaseRepository<T extends IEntity> extends CrudRepos
             MongoDbDriver.connect().then(() => {
                 this.entities = db.collection(collectionName);
             });
-        } else {
-            MongoDbDriver.connect();
         }
     }
 
@@ -41,10 +39,6 @@ export abstract class MongoDbBaseRepository<T extends IEntity> extends CrudRepos
         await this.model().deleteMany();
 
         return Promise.resolve(true);
-    }
-
-    find(entity: T): Promise<T[]> {
-        return Promise.resolve([]);
     }
 
     async findById(id: string): Promise<T> {

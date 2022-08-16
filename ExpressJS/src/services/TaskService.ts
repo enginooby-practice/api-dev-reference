@@ -3,8 +3,10 @@ import {ITaskSorter, Task} from "../entities/Task";
 import {IPaginator} from "../entities/IPaginator";
 
 class TaskService {
+    // * cross-model validation
     async doesUserOwnTask(userId: string, taskId: string): Promise<boolean> {
         const tasks = await userRepository.getTasksById(userId);
+
         for (const task of tasks) {
             if (task.id == taskId) {
                 return Promise.resolve(true);

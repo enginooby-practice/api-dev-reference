@@ -10,8 +10,6 @@ export abstract class CrudRepository<T extends IEntity> implements IWritable<T>,
 
     abstract delete(id: string): Promise<boolean>;
 
-    abstract find(entity: T): Promise<T[]>;
-
     abstract findById(id: string): Promise<T>;
 
     abstract update(id: string, entity: T): Promise<boolean>;
