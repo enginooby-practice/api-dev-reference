@@ -1,8 +1,13 @@
 import {taskRepository, userRepository} from "../repositories/repositoryManager";
-import {User} from "../models/User";
-import jwt from "jsonwebtoken";// ? Make an AuthService wrapper if use different auth strategies
+import {User, UserCreateDto} from "../models/User";
+import {v4 as uuid} from "uuid";
 
-class UserService {
+// import jwt from "jsonwebtoken";// ? Make an AuthService wrapper if use different auth strategies
+// FIX: jwt undefined in NestJS, so use require()
+const jwt = require("jsonwebtoken");
+
+
+export class UserService {
     async delete(id: string): Promise<boolean> {
         const tasks = await userRepository.getTasksById(id);
         tasks.forEach(task => taskRepository.delete(task.id));
@@ -23,7 +28,8 @@ class UserService {
     }
 
     // TODO: Hash password
-    async signUp(user: User) {
+    async signUp(userCreateDto: UserCreateDto) {
+        const user = {...userCreateDto, id: uuid()} as User;
         const newUser = await userRepository.create(user);
         const token = await this.generateAuthToken(newUser);
         await userRepository.save(newUser);
@@ -55,18 +61,19 @@ class UserService {
 
     async generateAuthToken(user: User): Promise<string> {
         // ? Using process variable causes NodeJS coupling
-        const token = jwt.sign({id: user.id}, process.env.JWT_SECRET_KEY);
+        // process.env.JWT_SECRET_KEY
+        const token = jwt.sign({id: user.id}, "enginooby");
 
+        // user.tokens.push(token);
         const tokens: string[] = user.tokens ?? [];
         tokens.push(token);
         user.tokens = tokens;
-        // user.tokens.push(token);
 
         return Promise.resolve(token);
     }
 
     async authenticate(token: string): Promise<User> {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY) as jwt.JwtPayload;
+        const decoded = jwt.verify(token, "enginooby");
         const user = await userRepository.findById(decoded.id);
 
         if (!user || !user.tokens.includes(token)) {
