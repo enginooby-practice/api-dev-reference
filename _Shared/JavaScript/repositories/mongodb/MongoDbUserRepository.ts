@@ -1,10 +1,10 @@
 import {MongoDbBaseRepository} from "./MongoDbBaseRepository";
-import {User} from "../../entities/User";
+import {User} from "../../models/User";
 import {Model} from "mongoose";
 import {UserModel} from "./MongoDbUser";
 import {IUserRepository} from "../base/IUserRepository";
-import {ITaskSorter, Task} from "../../entities/Task";
-import {IPaginator} from "../../entities/IPaginator";
+import {ITaskSorter, Task} from "../../models/Task";
+import {IPaginator} from "../../models/IPaginator";
 
 export class MongoDbUserRepository extends MongoDbBaseRepository<User> implements IUserRepository {
     protected model(): Model<any> {

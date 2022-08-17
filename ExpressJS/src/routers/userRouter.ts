@@ -2,7 +2,7 @@
 import Express, {NextFunction, Request, Response} from "express";
 import {authHandler} from "../middlewares/authHandler";
 import {StatusCodes} from "http-status-codes";
-import {userService} from "../services/UserService";
+import {userService} from "../_Shared/JavaScript/services/UserService";
 
 
 export const userRouter = Express.Router();

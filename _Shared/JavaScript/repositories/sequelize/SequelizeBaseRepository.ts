@@ -1,8 +1,7 @@
-import {IEntity} from "../../entities/IEntity";
+import {IEntity} from "../../models/IEntity";
 import {CrudRepository} from "../base/CrudRepository";
 import {SequelizeDriver} from "./SequelizeDriver";
 import * as Sequelize from "sequelize";
-import {User} from "../../entities/User";
 
 export abstract class SequelizeBaseRepository<T extends IEntity> extends CrudRepository<T> {
     protected abstract getSequelize(): Sequelize.ModelCtor<Sequelize.Model<any, any>>;

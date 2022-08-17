@@ -1,9 +1,9 @@
 import Express, {NextFunction, Request, Response} from "express";
 import {authHandler} from "../middlewares/authHandler";
 import {StatusCodes} from "http-status-codes";
-import {taskService} from "../services/TaskService";
-import {ITaskSorter, SortOrder, Task, TaskStatus} from "../entities/Task";
-import {IPaginator} from "../entities/IPaginator";
+import {taskService} from "../_Shared/JavaScript/services/TaskService";
+import {ITaskSorter, SortOrder, Task, TaskStatus} from "../_Shared/JavaScript/models/Task";
+import {IPaginator} from "../_Shared/JavaScript/models/IPaginator";
 
 export const taskRouter = Express.Router();
 

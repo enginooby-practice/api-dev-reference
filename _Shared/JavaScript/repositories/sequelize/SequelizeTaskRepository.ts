@@ -1,7 +1,7 @@
+import {Task} from "../../models/Task";
+import {User} from "../../models/User";
 import {SequelizeBaseRepository} from "./SequelizeBaseRepository";
-import {Task} from "../../entities/Task";
 import {ITaskRepository} from "../base/ITaskRepository";
-import {User} from "../../entities/User";
 import {Model, ModelCtor} from "sequelize/types";
 import {defineSequelizeTask, SequelizeTask} from "./SequelizeTask";
 import {userRepository} from "../repositoryManager";

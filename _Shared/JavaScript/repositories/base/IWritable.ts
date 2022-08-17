@@ -1,4 +1,4 @@
-import {IEntity} from "../../entities/IEntity";
+import {IEntity} from "../../models/IEntity";
 
 export interface IWritable<T extends IEntity> {
     create(entity: T): Promise<T>;

@@ -1,6 +1,6 @@
 import {model, Schema} from "mongoose";
-import {Task} from "../../entities/Task";
-import {User} from "../../entities/User";
+import {Task} from "../../models/Task";
+import {User} from "../../models/User";
 
 const taskSchema = new Schema<Task>({
         // @ts-ignore

@@ -1,8 +1,8 @@
 import {SequelizeBaseRepository} from "./SequelizeBaseRepository";
-import {User} from "../../entities/User";
+import {User} from "../../models/User";
 import {IUserRepository} from "../base/IUserRepository";
-import {ITaskSorter, Task} from "../../entities/Task";
-import {IPaginator} from "../../entities/IPaginator";
+import {ITaskSorter, Task} from "../../models/Task";
+import {IPaginator} from "../../models/IPaginator";
 import {defineSequelizeUser, SequelizeUser} from "./SequelizeUser";
 import {Model, ModelCtor} from "sequelize/types";
 import {defineSequelizeTask, SequelizeTask} from "./SequelizeTask";

@@ -1,0 +1,2 @@
+npm i -S firebase firebase-admin mariadb mongodb mysql mysql2 pg sequelize sqlite3
+npm i -D @types/mongoose @types/mysql @types/sequelize

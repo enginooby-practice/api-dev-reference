@@ -1,6 +1,6 @@
 import * as Sequelize from 'sequelize'
 import {SequelizeDriver} from "./SequelizeDriver";
-import {TaskStatus} from "../../entities/Task";
+import {TaskStatus} from "../../models/Task";
 
 
 export let SequelizeTask: Sequelize.ModelCtor<Sequelize.Model<any, any>>;

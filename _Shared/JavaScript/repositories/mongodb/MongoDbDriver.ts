@@ -1,3 +1,4 @@
+// D:\mongodb\bin\mongod.exe --dbpath=D:\mongodb-data
 import {ConnectionOptions} from "mongodb";
 import {connect} from "mongoose";
 
@@ -29,7 +30,8 @@ export class MongoDbDriver {
                 connectTimeoutMS: 1000
             } as unknown as ConnectionOptions;
 
-            return await connect(process.env.MONGODB_URI, connectionOptions).then(
+            // DECOUPLE process.env.MONGODB_URI
+            return await connect("mongodb://127.0.0.1:27017/task-manager", connectionOptions).then(
                 () => {
                     console.log(">>> Connected to MongoDB database.");
                 }

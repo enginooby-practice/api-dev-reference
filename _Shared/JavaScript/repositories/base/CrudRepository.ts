@@ -1,6 +1,6 @@
 import {IWritable} from "./IWritable";
 import {IReadable} from "./IReadable";
-import {IEntity} from "../../entities/IEntity";
+import {IEntity} from "../../models/IEntity";
 
 /**
  * Manage operations for a database table (entity).

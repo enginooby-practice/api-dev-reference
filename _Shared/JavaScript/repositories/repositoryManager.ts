@@ -7,10 +7,12 @@ import {MongoDbTaskRepository} from "./mongodb/MongoDbTaskRepository";
 import {MongoDbUserRepository} from "./mongodb/MongoDbUserRepository";
 import {SequelizeTaskRepository} from "./sequelize/SequelizeTaskRepository";
 import {SequelizeUserRepository} from "./sequelize/SequelizeUserRepository";
+import {FirebaseTaskRepository} from "./firebase/FirebaseTaskRepository";
+import {FirebaseUserRepository} from "./firebase/FirebaseUserRepository";
 
-enum RepositoryType {Mock, MongoDb, Sequelize}
+enum RepositoryType {Mock, MongoDb, Sequelize, Firebase}
 
-const REPOSITORY: RepositoryType = RepositoryType.Sequelize;
+const REPOSITORY: RepositoryType = RepositoryType.MongoDb;
 
 export let taskRepository: ITaskRepository;
 export let userRepository: IUserRepository;
@@ -29,6 +31,10 @@ function InitializeRepositories() {
         case RepositoryType.Sequelize:
             taskRepository = new SequelizeTaskRepository();
             userRepository = new SequelizeUserRepository();
+            break;
+        case RepositoryType.Firebase:
+            taskRepository = new FirebaseTaskRepository("tasks");
+            userRepository = new FirebaseUserRepository("users");
             break;
         default:
             break;

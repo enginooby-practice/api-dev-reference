@@ -1,8 +1,8 @@
 import {IReadable} from "./IReadable";
 import {IWritable} from "./IWritable";
-import {User} from "../../entities/User";
-import {ITaskSorter, Task} from "../../entities/Task";
-import {IPaginator} from "../../entities/IPaginator";
+import {User} from "../../models/User";
+import {ITaskSorter, Task} from "../../models/Task";
+import {IPaginator} from "../../models/IPaginator";
 
 export interface IUserRepository extends IReadable<User>, IWritable<User> {
     findByCredentials(email: string, password: string): Promise<User>; // ? Move to User/AuthService

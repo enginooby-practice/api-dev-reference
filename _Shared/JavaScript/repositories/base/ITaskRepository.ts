@@ -1,7 +1,7 @@
 import {IWritable} from "./IWritable";
 import {IReadable} from "./IReadable";
-import {Task} from "../../entities/Task";
-import {User} from "../../entities/User";
+import {Task} from "../../models/Task";
+import {User} from "../../models/User";
 
 /**
  * Specific operations for the Task entity.

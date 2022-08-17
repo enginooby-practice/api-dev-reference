@@ -1,9 +1,9 @@
+import {Task} from "../../models/Task";
+import {User} from "../../models/User";
 import {MongoDbBaseRepository} from "./MongoDbBaseRepository";
-import {Task} from "../../entities/Task";
 import {ITaskRepository} from "../base/ITaskRepository";
 import {Model} from "mongoose";
 import {TaskModel} from "./MongoDbTask";
-import {User} from "../../entities/User";
 import {ObjectId} from "mongodb";
 import {userRepository} from "../repositoryManager"; // ? DECOUPLE
 

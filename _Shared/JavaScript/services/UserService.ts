@@ -1,5 +1,5 @@
 import {taskRepository, userRepository} from "../repositories/repositoryManager";
-import {User} from "../entities/User";
+import {User} from "../models/User";
 import jwt from "jsonwebtoken";// ? Make an AuthService wrapper if use different auth strategies
 
 class UserService {

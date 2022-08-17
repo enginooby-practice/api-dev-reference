@@ -1,4 +1,4 @@
-import {IEntity} from "../../entities/IEntity";
+import {IEntity} from "../../models/IEntity";
 
 export interface IReadable<T extends IEntity> {
     getAll(): Promise<T[]>;

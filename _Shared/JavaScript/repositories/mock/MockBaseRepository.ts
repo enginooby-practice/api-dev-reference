@@ -1,5 +1,5 @@
 import fs from "fs";
-import {IEntity} from "../../entities/IEntity";
+import {IEntity} from "../../models/IEntity";
 import {CrudRepository} from "../base/CrudRepository";
 
 /**

@@ -1,8 +1,8 @@
-import {User} from "../../entities/User";
 import {IUserRepository} from "../base/IUserRepository";
 import {MockBaseRepository} from "./MockBaseRepository";
-import {ITaskSorter, Task} from "../../entities/Task";
-import {IPaginator} from "../../entities/IPaginator";
+import {User} from "../../models/User";
+import {ITaskSorter, Task} from "../../models/Task";
+import {IPaginator} from "../../models/IPaginator";
 
 export class MockUserRepository extends MockBaseRepository<User> implements IUserRepository {
     findByCredentials(email: string, password: string): Promise<User> {
