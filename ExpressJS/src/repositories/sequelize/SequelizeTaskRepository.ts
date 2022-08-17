@@ -28,6 +28,7 @@ export class SequelizeTaskRepository extends SequelizeBaseRepository<Task> imple
         return Promise.resolve(tasks);
     }
 
+    // REFACTOR: Duplicated code
     async getUserById(id: string): Promise<User> {
         const task = await this.findById(id);
         const user = await userRepository.findById(task.ownerId);

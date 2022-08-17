@@ -6,10 +6,10 @@ let userDemo: User;
 const userDemoData = new User("0", "User", "password", "user@gmail.com");
 
 const user1 = {
-    "id": "1",
-    "username": "User 1",
-    "password": "password1",
-    "email": "user1@gmail.com"
+    id: "1",
+    username: "User 1",
+    password: "password1",
+    email: "user1@gmail.com"
 };
 
 beforeEach(async () => {
@@ -29,7 +29,7 @@ test("Should delete user", async () => {
     // TODO: test cascade delete dependent tasks
 })
 
-test("Should sign up a new user", async () => {
+test("Should sign up a new user (Service)", async () => {
     const response = await userService.signUp(user1 as User);
 
     const userInRepo = await userRepository.findById(response.newUser.id);

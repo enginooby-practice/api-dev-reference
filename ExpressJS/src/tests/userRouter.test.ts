@@ -15,18 +15,21 @@ const request = require('supertest');
 const baseRoute = "/api/users";
 
 let userDemo: User;
+let token: string;
 const userDemoData = new User("0", "User", "password", "user@gmail.com");
 
 const user1 = {
-    "id": "1",
-    "username": "User 1",
-    "password": "password1",
-    "email": "user1@gmail.com"
+    id: "1",
+    username: "User 1",
+    password: "password1",
+    email: "user1@gmail.com"
 };
 
 beforeEach(async () => {
     await userRepository.deleteAll();
-    userDemo = (await userService.signUp(userDemoData)).newUser;
+    const response = await userService.signUp(userDemoData);
+    userDemo = response.newUser;
+    token = response.token;
 })
 
 test("Should sign up a new user", async () => {
