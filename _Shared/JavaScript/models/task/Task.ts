@@ -1,4 +1,5 @@
 import {IModel} from "../base/IModel";
+import {IUpdateDto} from "../base/IDto";
 
 export class Task implements IModel {
     id: string;
@@ -9,6 +10,9 @@ export class Task implements IModel {
     priority: number;
     tags: string[];
     ownerId: any;
+
+    applyUpdate(dto: IUpdateDto<Task>): void {
+    }
 }
 
 export enum TaskStatus {

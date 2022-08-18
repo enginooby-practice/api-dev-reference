@@ -2,6 +2,7 @@ import {IModel} from "../../models/base/IModel";
 import {CrudRepository} from "../base/CrudRepository";
 import {TypeOrmDriver} from "./TypeOrmDriver";
 import {Repository} from "typeorm";
+import {IUpdateDto} from "../../models/base/IDto";
 
 export abstract class TypeOrmBaseRepository<T extends IModel> extends CrudRepository<T> {
     protected abstract getTypeOrmRepository(): Repository<any>;
@@ -57,10 +58,10 @@ export abstract class TypeOrmBaseRepository<T extends IModel> extends CrudReposi
         return Promise.resolve(entities);
     }
 
-    async update(id: string, entity: T): Promise<boolean> {
+    async update(id: string, dto: IUpdateDto<T>): Promise<boolean> {
         const repoEntity = await this.getById(id);
 
-        // TODO: copy selected non-null properties (maybe using UpdateDTO) from passed entity to entityToUpdate
+        repoEntity.applyUpdate(dto);
         await this.getTypeOrmRepository().save(repoEntity);
 
         return Promise.resolve(true);

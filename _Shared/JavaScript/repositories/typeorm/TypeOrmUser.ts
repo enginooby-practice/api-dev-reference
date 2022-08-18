@@ -14,4 +14,10 @@ export class TypeOrmUser extends User {
 
     @Column({unique: true})
     public email: string;
+
+    @Column({
+        type: "simple-array",
+        nullable: true,
+    })
+    tokens: string[];
 }

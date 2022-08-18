@@ -1,4 +1,5 @@
 import {IModel} from "../base/IModel";
+import {UserUpdateDto} from "./UserUpdateDto";
 
 export class User implements IModel {
     constructor(
@@ -19,5 +20,12 @@ export class User implements IModel {
             username: this.username,
             email: this.email,
         }
+    }
+
+    applyUpdate(dto: UserUpdateDto): void {
+        this.email = dto.email ?? this.email;
+        this.username = dto.username ?? this.username;
+        this.password = dto.password ?? this.password;
+        this.tokens = dto.tokens ?? this.tokens;
     }
 }
