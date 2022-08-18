@@ -1,10 +1,11 @@
-import {IEntity} from "../../models/IEntity";
+import {IModel} from "../../models/base/IModel";
 import {CrudRepository} from "../base/CrudRepository";
 import {MongoDbDriver} from "./MongoDbDriver";
 import {Collection, Db} from 'mongodb';
 import {Model} from "mongoose"
+import {NotFoundError} from "rxjs";
 
-export abstract class MongoDbBaseRepository<T extends IEntity> extends CrudRepository<T> {
+export abstract class MongoDbBaseRepository<T extends IModel> extends CrudRepository<T> {
     protected entities: Collection;
 
     protected abstract model(): Model<any>;
@@ -34,7 +35,7 @@ export abstract class MongoDbBaseRepository<T extends IEntity> extends CrudRepos
         return Promise.resolve(true);
     }
 
-    async findById(id: string): Promise<T> {
+    async getById(id: string): Promise<T> {
         const document = await this.model().findOne({id});
 
         if (document) {
@@ -42,7 +43,8 @@ export abstract class MongoDbBaseRepository<T extends IEntity> extends CrudRepos
             return Promise.resolve(entity);
         }
 
-        return Promise.resolve(null);
+        return Promise.reject(new Error(`Entity with id ${id} not found.`));
+        // throw new NotFoundError(`Entity with ${id} not found.`);
     }
 
     async getAll(): Promise<T[]> {

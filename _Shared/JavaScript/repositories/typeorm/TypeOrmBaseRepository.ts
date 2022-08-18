@@ -1,10 +1,10 @@
-import {IEntity} from "../../models/IEntity";
+import {IModel} from "../../models/base/IModel";
 import {CrudRepository} from "../base/CrudRepository";
 import {TypeOrmDriver} from "./TypeOrmDriver";
 import {Repository} from "typeorm";
 
-export abstract class TypeOrmBaseRepository<T extends IEntity> extends CrudRepository<T> {
-    protected abstract getTypeOrmRepository(): Repository<any>
+export abstract class TypeOrmBaseRepository<T extends IModel> extends CrudRepository<T> {
+    protected abstract getTypeOrmRepository(): Repository<any>;
 
     constructor() {
         super();
@@ -17,7 +17,7 @@ export abstract class TypeOrmBaseRepository<T extends IEntity> extends CrudRepos
     }
 
     async delete(id: string): Promise<boolean> {
-        const repoEntity = await this.findById(id);
+        const repoEntity = await this.getById(id);
 
         if (!repoEntity) return Promise.reject(new Error("Entity not found."));
 
@@ -42,23 +42,23 @@ export abstract class TypeOrmBaseRepository<T extends IEntity> extends CrudRepos
         return Promise.resolve(null);
     }
 
-    async findById(id: string): Promise<T> {
-        const entityInRepo = await this.getTypeOrmRepository().findOneBy({id});
+    async getById(id: string): Promise<T> {
+        const repoEntity = await this.getTypeOrmRepository().findOneBy({id});
 
-        return Promise.resolve(entityInRepo as T);
+        return Promise.resolve(repoEntity as T);
     }
 
     async getAll(): Promise<T[]> {
-        const entitiesInRepo = await this.getTypeOrmRepository().find();
+        const repoEntities = await this.getTypeOrmRepository().find();
         const entities: T[] = [];
 
-        entitiesInRepo.forEach(e => entities.push(e as T));
+        repoEntities.forEach(e => entities.push(e as T));
 
         return Promise.resolve(entities);
     }
 
     async update(id: string, entity: T): Promise<boolean> {
-        const repoEntity = await this.findById(id);
+        const repoEntity = await this.getById(id);
 
         // TODO: copy selected non-null properties (maybe using UpdateDTO) from passed entity to entityToUpdate
         await this.getTypeOrmRepository().save(repoEntity);

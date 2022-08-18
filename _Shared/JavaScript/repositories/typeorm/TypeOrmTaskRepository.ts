@@ -1,5 +1,5 @@
-import {Task} from "../../models/Task";
-import {User} from "../../models/User";
+import {Task} from "../../models/task/Task";
+import {User} from "../../models/user/User";
 import {ITaskRepository} from "../base/ITaskRepository";
 import {TypeOrmBaseRepository} from "./TypeOrmBaseRepository";
 import {TypeOrmDriver} from "./TypeOrmDriver";
@@ -11,7 +11,7 @@ export class TypeOrmTaskRepository extends TypeOrmBaseRepository<Task> implement
         return TypeOrmDriver.dataSource.getRepository(TypeOrmTask);
     }
 
-    async findByTitle(title: string): Promise<Task[]> {
+    async getByTitle(title: string): Promise<Task[]> {
         const repoEntities = await this.getTypeOrmRepository().findBy({title});
         const entities: Task[] = [];
 
@@ -20,7 +20,7 @@ export class TypeOrmTaskRepository extends TypeOrmBaseRepository<Task> implement
         return Promise.resolve(repoEntities);
     }
 
-    getUserById(id: string): Promise<User> {
+    getUserOf(id: string): Promise<User> {
         return Promise.resolve(undefined);
     }
 

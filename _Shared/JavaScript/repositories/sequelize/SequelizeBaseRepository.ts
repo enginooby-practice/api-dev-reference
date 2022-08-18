@@ -1,16 +1,15 @@
-import {IEntity} from "../../models/IEntity";
+import {IModel} from "../../models/base/IModel";
 import {CrudRepository} from "../base/CrudRepository";
 import {SequelizeDriver} from "./SequelizeDriver";
 import * as Sequelize from "sequelize";
 
-export abstract class SequelizeBaseRepository<T extends IEntity> extends CrudRepository<T> {
+export abstract class SequelizeBaseRepository<T extends IModel> extends CrudRepository<T> {
     protected abstract getSequelize(): Sequelize.ModelCtor<Sequelize.Model<any, any>>;
 
     constructor() {
         super();
 
-        SequelizeDriver.connect().then(() => {
-        });
+        SequelizeDriver.connect().then();
     }
 
     async getAll(): Promise<T[]> {
@@ -24,7 +23,7 @@ export abstract class SequelizeBaseRepository<T extends IEntity> extends CrudRep
         return Promise.resolve(entities);
     }
 
-    async findById(id: string): Promise<T> {
+    async getById(id: string): Promise<T> {
         const entityInRepo = await this.getSequelize().findByPk(parseInt(id)) as unknown as T;
 
         if (entityInRepo) return Promise.resolve(entityInRepo)

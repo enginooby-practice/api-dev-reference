@@ -1,18 +1,19 @@
-import {User} from "../../models/User";
-import {Task, TaskSorter} from "../../models/Task";
+import {User} from "../../models/user/User";
+import {Task} from "../../models/task/Task";
 import {IUserRepository} from "../base/IUserRepository";
-import {IPaginator} from "../../models/IPaginator";
+import {IPaginator} from "../../models/base/IDto";
 import {TypeOrmBaseRepository} from "./TypeOrmBaseRepository";
 import {TypeOrmDriver} from "./TypeOrmDriver";
 import {TypeOrmUser} from "./TypeOrmUser";
 import {Repository} from "typeorm";
+import {TaskSortDto} from "../../models/task/TaskSortDto";
 
 export class TypeOrmUserRepository extends TypeOrmBaseRepository<User> implements IUserRepository {
     protected getTypeOrmRepository(): Repository<any> {
         return TypeOrmDriver.dataSource.getRepository(TypeOrmUser);
     }
 
-    async findByCredentials(email: string, password: string): Promise<User> {
+    async getByCredentials(email: string, password: string): Promise<User> {
         const repoEntity = await this.getTypeOrmRepository().findOneBy({email, password});
 
         if (repoEntity) {
@@ -22,7 +23,7 @@ export class TypeOrmUserRepository extends TypeOrmBaseRepository<User> implement
         return Promise.reject(new Error("Entity not found."));
     }
 
-    getTasksById(id: string, filter?: Partial<Task>, paginator?: IPaginator, sorter?: TaskSorter): Promise<Task[]> {
+    getTasksOf(id: string, filter?: Partial<Task>, paginator?: IPaginator, sorter?: TaskSortDto): Promise<Task[]> {
         return Promise.resolve([]);
     }
 

@@ -1,4 +1,4 @@
-import {User as UserBase,} from "../../models/User";
+import {User as UserBase,} from "../../models/user/User";
 import {Column, Entity, PrimaryColumn, PrimaryGeneratedColumn} from "typeorm";
 
 @Entity("users")

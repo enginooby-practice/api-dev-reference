@@ -1,5 +1,5 @@
-import {Task} from "../../models/Task";
-import {User} from "../../models/User";
+import {Task} from "../../models/task/Task";
+import {User} from "../../models/user/User";
 import {MongoDbBaseRepository} from "./MongoDbBaseRepository";
 import {ITaskRepository} from "../base/ITaskRepository";
 import {Model} from "mongoose";
@@ -13,7 +13,7 @@ export class MongoDbTaskRepository extends MongoDbBaseRepository<Task> implement
     }
 
     async create(entity: Task): Promise<Task> {
-        const user = await userRepository.findById(entity.ownerId);
+        const user = await userRepository.getById(entity.ownerId);
         // @ts-ignore
         entity.ownerId = new ObjectId(user._id);
         const document = new TaskModel(entity);
@@ -26,14 +26,14 @@ export class MongoDbTaskRepository extends MongoDbBaseRepository<Task> implement
         return Promise.reject(new Error("Failed to create."));
     }
 
-    async findByTitle(title: string): Promise<Task[]> {
+    async getByTitle(title: string): Promise<Task[]> {
         const regex = new RegExp(title, 'i') // i for case insensitive
         const documents = await this.model().find({title: {$regex: regex}});
 
         return Promise.resolve(documents);
     }
 
-    async getUserById(id: string): Promise<User> {
+    async getUserOf(id: string): Promise<User> {
         const task = await this.model().findOne({id});
         await task.populate('ownerId');
 

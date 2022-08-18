@@ -1,24 +1,21 @@
-import {IWritable} from "./IWritable";
-import {IReadable} from "./IReadable";
-import {IEntity} from "../../models/IEntity";
+import {IModel} from "../../models/base/IModel";
+import {ICrudable} from "./ICrudable";
 
 /**
  * Manage operations for a database table (entity).
  */
-export abstract class CrudRepository<T extends IEntity> implements IWritable<T>, IReadable<T> {
+export abstract class CrudRepository<T extends IModel> implements ICrudable<T> {
     abstract create(entity: T): Promise<T>;
-
-    abstract delete(id: string): Promise<boolean>;
-
-    abstract findById(id: string): Promise<T>;
-
-    abstract update(id: string, entity: T): Promise<boolean>;
 
     abstract getAll(): Promise<T[]>;
 
-    async save(entity: T): Promise<boolean> {
-        return this.update(entity.id, entity);
-    }
+    abstract getById(id: string): Promise<T>;
+
+    abstract update(id: string, entity: T): Promise<boolean>;
+
+    save = async (entity: T): Promise<boolean> => await this.update(entity.id, entity);
+
+    abstract delete(id: string): Promise<boolean>;
 
     abstract deleteAll(): Promise<boolean>;
 }

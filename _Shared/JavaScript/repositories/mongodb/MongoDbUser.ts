@@ -1,6 +1,6 @@
 import {model, Schema} from "mongoose";
-import {User} from "../../models/User";
-import {Task} from "../../models/Task";
+import {User} from "../../models/user/User";
+import {Task} from "../../models/task/Task";
 
 const userSchema = new Schema<User>({
         id: {type: String, required: false, unique: true},

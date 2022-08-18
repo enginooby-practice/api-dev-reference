@@ -1,11 +1,11 @@
 import fs from "fs";
-import {IEntity} from "../../models/IEntity";
+import {IModel} from "../../models/base/IModel";
 import {CrudRepository} from "../base/CrudRepository";
 
 /**
  * Fake data from text file or in-memory database, used for testing.
  */
-export class MockBaseRepository<T extends IEntity> extends CrudRepository<T> {
+export class MockBaseRepository<T extends IModel> extends CrudRepository<T> {
     protected readonly entities: Array<T> = [];
 
     constructor(jsonPath: string) {
@@ -21,7 +21,7 @@ export class MockBaseRepository<T extends IEntity> extends CrudRepository<T> {
         return Promise.resolve(entity);
     }
 
-    async findById(id: string): Promise<T> {
+    async getById(id: string): Promise<T> {
         return Promise.resolve(this.entities.find(e => e.id == id));
     }
 
@@ -30,7 +30,7 @@ export class MockBaseRepository<T extends IEntity> extends CrudRepository<T> {
     }
 
     async update(id: string, entity: T): Promise<boolean> {
-        let oldEntity = await this.findById(id);
+        let oldEntity = await this.getById(id);
 
         if (oldEntity) {
             // keep keys that new entity missing from the old entity
@@ -47,7 +47,7 @@ export class MockBaseRepository<T extends IEntity> extends CrudRepository<T> {
     }
 
     async delete(id: string): Promise<boolean> {
-        const entity = await this.findById(id);
+        const entity = await this.getById(id);
 
         for (let i = 0; i < this.entities.length; i++) {
             if (this.entities[i] === entity) {
