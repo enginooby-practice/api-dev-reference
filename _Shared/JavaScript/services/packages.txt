@@ -1,2 +1,2 @@
-npm i -S http-status-codes jsonwebtoken
+npm i -S http-status-codes jsonwebtoken uuid
 npm i -D @types/jsonwebtoken

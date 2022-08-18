@@ -1,3 +1,4 @@
+// ? DECOUPLE: let each repo type to init User & Task repos by itself depending on exported REPOSITORY value
 import * as path from "path";
 import {ITaskRepository} from "./base/ITaskRepository";
 import {IUserRepository} from "./base/IUserRepository";
@@ -9,8 +10,10 @@ import {SequelizeTaskRepository} from "./sequelize/SequelizeTaskRepository";
 import {SequelizeUserRepository} from "./sequelize/SequelizeUserRepository";
 import {FirebaseTaskRepository} from "./firebase/FirebaseTaskRepository";
 import {FirebaseUserRepository} from "./firebase/FirebaseUserRepository";
+import {TypeOrmTaskRepository} from "./typeorm/TypeOrmTaskRepository";
+import {TypeOrmUserRepository} from "./typeorm/TypeOrmUserRepository";
 
-enum RepositoryType {Mock, MongoDb, Sequelize, Firebase}
+enum RepositoryType {Mock, MongoDb, Sequelize, Firebase, TypeOrm}
 
 const REPOSITORY: RepositoryType = RepositoryType.MongoDb;
 
@@ -35,6 +38,10 @@ function InitializeRepositories() {
         case RepositoryType.Firebase:
             taskRepository = new FirebaseTaskRepository("tasks");
             userRepository = new FirebaseUserRepository("users");
+            break;
+        case RepositoryType.TypeOrm:
+            taskRepository = new TypeOrmTaskRepository();
+            userRepository = new TypeOrmUserRepository();
             break;
         default:
             break;
