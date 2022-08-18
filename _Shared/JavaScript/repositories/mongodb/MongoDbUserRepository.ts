@@ -1,10 +1,11 @@
 import {MongoDbBaseRepository} from "./MongoDbBaseRepository";
-import {User} from "../../models/User";
+import {User} from "../../models/user/User";
 import {Model} from "mongoose";
 import {UserModel} from "./MongoDbUser";
 import {IUserRepository} from "../base/IUserRepository";
-import {ITaskSorter, Task} from "../../models/Task";
-import {IPaginator} from "../../models/IPaginator";
+import {Task} from "../../models/task/Task";
+import {IPaginator} from "../../models/base/IDto";
+import {TaskSortDto} from "../../models/task/TaskSortDto";
 
 export class MongoDbUserRepository extends MongoDbBaseRepository<User> implements IUserRepository {
     protected model(): Model<any> {
@@ -25,7 +26,7 @@ export class MongoDbUserRepository extends MongoDbBaseRepository<User> implement
         return Promise.reject(new Error(`Failed to create new ${User.name}.`));
     }
 
-    async findByCredentials(email: string, password: string): Promise<User> {
+    async getByCredentials(email: string, password: string): Promise<User> {
         // @ts-ignore
         const user = await this.model().findByCredentials(email, password);
 
@@ -36,7 +37,7 @@ export class MongoDbUserRepository extends MongoDbBaseRepository<User> implement
         // return Promise.resolve(undefined);
     }
 
-    async getTasksById(id: string, filter: Partial<Task> = {}, paginator: IPaginator = {}, sorter: ITaskSorter = {}): Promise<Task[]> {
+    async getTasksOf(id: string, filter: Partial<Task> = {}, paginator: IPaginator = {}, sorter: TaskSortDto = {}): Promise<Task[]> {
         const user = await this.model().findOne({id});
 
         await user.populate({

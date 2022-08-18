@@ -1,12 +1,13 @@
-import {IReadable} from "./IReadable";
-import {IWritable} from "./IWritable";
-import {User} from "../../models/User";
-import {ITaskSorter, Task} from "../../models/Task";
-import {IPaginator} from "../../models/IPaginator";
+import {User} from "../../models/user/User";
+import {Task} from "../../models/task/Task";
+import {IGetDto, IPaginator} from "../../models/base/IDto";
+import {TaskSortDto} from "../../models/task/TaskSortDto";
+import {ICrudable} from "./ICrudable";
 
-export interface IUserRepository extends IReadable<User>, IWritable<User> {
-    findByCredentials(email: string, password: string): Promise<User>; // ? Move to User/AuthService
+export interface IUserRepository extends ICrudable<User> {
+    // ? Move to User/AuthService
+    getByCredentials(email: string, password: string): Promise<User>;
 
     // Implement sorting, filtering, paginating for endpoint that may return many records
-    getTasksById(id: string, filter?: Partial<Task>, paginator?: IPaginator, sorter?: ITaskSorter): Promise<Task[]>;
+    getTasksOf(id: string, filter?: Partial<Task>, paginator?: IPaginator, sorter?: TaskSortDto): Promise<Task[] | IGetDto<Task>[]>;
 }

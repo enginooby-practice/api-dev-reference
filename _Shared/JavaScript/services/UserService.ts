@@ -1,6 +1,8 @@
 import {taskRepository, userRepository} from "../repositories/repositoryManager";
-import {User, UserCreateDto} from "../models/User";
+import {User} from "../models/user/User";
 import {v4 as uuid} from "uuid";
+import {UserCreateDto} from "../models/user/UserCreateDto";
+import {Task} from "../models/task/Task";
 
 // import jwt from "jsonwebtoken";// ? Make an AuthService wrapper if use different auth strategies
 // FIX: jwt undefined in NestJS, so use require()
@@ -9,8 +11,8 @@ const jwt = require("jsonwebtoken");
 
 export class UserService {
     async delete(id: string): Promise<boolean> {
-        const tasks = await userRepository.getTasksById(id);
-        tasks.forEach(task => taskRepository.delete(task.id));
+        const tasks = await userRepository.getTasksOf(id);
+        tasks.forEach(task => taskRepository.delete((task as Task).id));
 
         return userRepository.delete(id);
     }
@@ -38,7 +40,7 @@ export class UserService {
     }
 
     async signIn(email: string, password: string): Promise<User> {
-        const user = await userRepository.findByCredentials(email, password);
+        const user = await userRepository.getByCredentials(email, password);
         await this.generateAuthToken(user);
         await userRepository.save(user);
 
@@ -74,7 +76,7 @@ export class UserService {
 
     async authenticate(token: string): Promise<User> {
         const decoded = jwt.verify(token, "enginooby");
-        const user = await userRepository.findById(decoded.id);
+        const user = await userRepository.getById(decoded.id) as User;
 
         if (!user || !user.tokens.includes(token)) {
             return Promise.reject(new Error("Invalid token"));

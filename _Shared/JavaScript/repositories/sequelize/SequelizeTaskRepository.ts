@@ -1,10 +1,11 @@
-import {Task} from "../../models/Task";
-import {User} from "../../models/User";
+import {Task} from "../../models/task/Task";
+import {User} from "../../models/user/User";
 import {SequelizeBaseRepository} from "./SequelizeBaseRepository";
 import {ITaskRepository} from "../base/ITaskRepository";
 import {Model, ModelCtor} from "sequelize/types";
 import {defineSequelizeTask, SequelizeTask} from "./SequelizeTask";
 import {userRepository} from "../repositoryManager";
+import {IGetDto} from "../../models/base/IDto";
 
 export class SequelizeTaskRepository extends SequelizeBaseRepository<Task> implements ITaskRepository {
     protected getSequelize(): ModelCtor<Model<any, any>> {
@@ -12,7 +13,7 @@ export class SequelizeTaskRepository extends SequelizeBaseRepository<Task> imple
         return SequelizeTask;
     }
 
-    async findByTitle(title: string): Promise<Task[]> {
+    async getByTitle(title: string): Promise<Task[]> {
         const tasks: Task[] = [];
 
         const tasksInRepo = await SequelizeTask.findAll({
@@ -29,9 +30,9 @@ export class SequelizeTaskRepository extends SequelizeBaseRepository<Task> imple
     }
 
     // REFACTOR: Duplicated code
-    async getUserById(id: string): Promise<User> {
-        const task = await this.findById(id);
-        const user = await userRepository.findById(task.ownerId);
+    async getUserOf(id: string): Promise<User | IGetDto<User>> {
+        const task = await this.getById(id);
+        const user = await userRepository.getById(task.ownerId);
 
         return Promise.resolve(user);
     }
