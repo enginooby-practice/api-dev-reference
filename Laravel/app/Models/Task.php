@@ -20,6 +20,7 @@ class Task extends Model
     protected $casts = [
         "status" => TaskStatus::class,
         "tags" => "array",
+        "isArchived" => "boolean",
     ];
 }
 

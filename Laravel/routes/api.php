@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,8 +15,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// * url base "/api/..."
+
+Route::get("/tasks", function () {
+    return Task::all();
 });
 
+Route::get("/tasks/{id}", function (int $id) {
+    return Task::find($id);
+});
 
+Route::post("/tasks", function (Request $request) {
+    $request->validate([
+        "title" => "required",
+    ]);
+
+    return Task::create($request->all());
+});
+
+Route::patch("/tasks/{id}", function (Request $request, int $id) {
+    $task = Task::find($id);
+    $task->update($request->all());
+
+    return $task;
+});
+
+Route::delete("tasks/{id}", function (int $id) {
+    $isDestroy = Task::destroy($id);
+
+    return "Deleted: " . $isDestroy;
+});
