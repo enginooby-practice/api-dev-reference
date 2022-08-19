@@ -14,6 +14,11 @@ export class UserController {
         return await this.userService.signUp(dto);
     }
 
+    @Post("/login")
+    async signIn(@Body() dto: UserCredentialsDto) {
+        return await this.userService.signIn(dto.email, dto.password);
+    }
+
     // *** DEBUG API ***//
     @Delete()
     async deleteAll() {
