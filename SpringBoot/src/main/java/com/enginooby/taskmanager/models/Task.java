@@ -4,15 +4,16 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.lang.Nullable;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Data
 @Entity
 @Table(name = "tasks")
+@EntityListeners(AuditingEntityListener.class)
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,19 +32,19 @@ public class Task {
     @Column
     private String image;
 
+    @Column
     @ElementCollection
-    @Column()
     private List<String> tags;
 
     @Column(name = "isArchived")
     private boolean isArchived;
 
-    @Column(name = "createAt")
     @CreatedDate
+    @Column(name = "createAt")
     private Date createAt;
 
-    @Column(name = "updateAt")
     @LastModifiedDate
+    @Column(name = "updateAt")
     private Date updateAt;
 }
 
