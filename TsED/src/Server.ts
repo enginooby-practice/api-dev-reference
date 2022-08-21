@@ -9,18 +9,18 @@ import methodOverride from "method-override";
 import cors from "cors";
 import "@tsed/ajv";
 import "@tsed/swagger";
-import {config} from "./config/index";
+import {config} from "./config";
 import * as rest from "./controllers/rest/index";
 import * as pages from "./controllers/pages/index";
 
 @Configuration({
   ...config,
   acceptMimes: ["application/json"],
-  httpPort: process.env.PORT || 8083,
+  httpPort: "localhost:6969",
   httpsPort: false, // CHANGE
   componentsScan: false,
   mount: {
-    "/rest": [
+    "/api": [
       ...Object.values(rest)
     ],
     "/": [

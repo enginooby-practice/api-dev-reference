@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "module": "commonjs",
-    "target": "esnext",
+    "target": "ES2020",
     "sourceMap": true,
     "declaration": false,
     "experimentalDecorators": true,
@@ -15,7 +15,7 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "allowSyntheticDefaultImports": true,
-    "importHelpers": true,
+    "importHelpers": false,
     "newLine": "LF",
     "noEmit": true,
     "esModuleInterop": true,

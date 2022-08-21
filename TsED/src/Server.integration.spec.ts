@@ -13,7 +13,8 @@ describe("Server", () => {
   afterEach(PlatformTest.reset);
 
   it("should call GET /rest", async () => {
-     const response = await request.get("/rest").expect(404);
+     // @ts-ignore
+      const response = await request.get("/rest").expect(404);
 
      expect(response.body).toEqual({
        errors: [],

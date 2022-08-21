@@ -1,5 +1,5 @@
 import {readFileSync} from "fs";
-import {envs} from "./envs/index";
+import {envs} from "./envs";
 import loggerConfig from "./logger/index";
 const pkg = JSON.parse(readFileSync("./package.json", {encoding: "utf8"}));
 
