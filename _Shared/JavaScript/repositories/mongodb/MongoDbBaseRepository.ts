@@ -3,7 +3,6 @@ import {CrudRepository} from "../base/CrudRepository";
 import {MongoDbDriver} from "./MongoDbDriver";
 import {Collection, Db} from 'mongodb';
 import {Model} from "mongoose"
-import {NotFoundError} from "rxjs";
 
 export abstract class MongoDbBaseRepository<T extends IModel> extends CrudRepository<T> {
     protected entities: Collection;

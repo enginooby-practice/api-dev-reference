@@ -36,7 +36,7 @@ export class TypeOrmTaskRepository extends TypeOrmBaseRepository<Task> implement
     }
 
     getUserOf(id: string): Promise<User> {
-        return Promise.resolve(undefined);
+        return Promise.reject(new Error("Not implemented"));
     }
 
     async create(entity: Task): Promise<Task> {

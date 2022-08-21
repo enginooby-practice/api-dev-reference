@@ -15,6 +15,7 @@ export class TypeOrmUser extends User {
     @Column({unique: true})
     public email: string;
 
+    // TypeORM save all elements in a single string, seperated by ","
     @Column({
         type: "simple-array",
         nullable: true,

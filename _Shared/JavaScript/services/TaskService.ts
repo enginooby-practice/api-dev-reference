@@ -29,13 +29,13 @@ export class TaskService {
     }
 
     async findById(userId: any, id: string): Promise<Task | IGetDto<Task>> {
-        if (!await this.doesUserOwnTask(userId, id)) return;
+        if (!await this.doesUserOwnTask(userId, id)) throw new Error("");
 
         return await taskRepository.getById(id);
     }
 
     async delete(userId: any, id: string): Promise<boolean> {
-        if (!await this.doesUserOwnTask(userId, id)) return;
+        if (!await this.doesUserOwnTask(userId, id)) throw new Error("");
 
         return await taskRepository.delete(id);
     }
@@ -45,7 +45,7 @@ export class TaskService {
     }
 
     async update(userId: any, id: string, content: any): Promise<boolean> {
-        if (!await this.doesUserOwnTask(userId, id)) return;
+        if (!await this.doesUserOwnTask(userId, id)) throw new Error("");
 
         const updatingKeys = Object.keys(content);
         const mutableKeys = ["title", "status", "isArchived", "priority", "tags"];

@@ -7,10 +7,10 @@ import {TaskSortDto} from "../../models/task/TaskSortDto";
 
 export class JsonUserRepository extends JsonBaseRepository<User> implements IUserRepository {
     getByCredentials(email: string, password: string): Promise<User> {
-        return Promise.resolve(undefined);
+        return Promise.reject(new Error("Not implemented"));
     }
 
     getTasksOf(id: string, filter: Partial<Task> = {}, paginator: IPaginator = {}, sorter: TaskSortDto = {}): Promise<Task[]> {
-        return Promise.resolve(undefined);
+        return Promise.reject(new Error("Not implemented"));
     }
 }

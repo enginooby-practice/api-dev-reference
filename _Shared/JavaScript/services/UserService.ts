@@ -48,7 +48,7 @@ export class UserService {
     }
 
     async signOut(currentUser: User, currentToken: string) {
-        currentUser.tokens = currentUser.tokens.filter(token => token != currentToken);
+        currentUser.tokens = currentUser.tokens!.filter(token => token != currentToken);
         await userRepository.save(currentUser);
 
         return {message: "Logged out"};
@@ -78,7 +78,7 @@ export class UserService {
         const decoded = jwt.verify(token, "enginooby");
         const user = await userRepository.getById(decoded.id) as User;
 
-        if (!user || !user.tokens.includes(token)) {
+        if (!user || !user.tokens!.includes(token)) {
             return Promise.reject(new Error("Invalid token"));
         }
 

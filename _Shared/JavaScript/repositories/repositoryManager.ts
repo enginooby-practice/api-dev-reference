@@ -13,16 +13,16 @@ import {FirebaseUserRepository} from "./firebase/FirebaseUserRepository";
 import {TypeOrmTaskRepository} from "./typeorm/TypeOrmTaskRepository";
 import {TypeOrmUserRepository} from "./typeorm/TypeOrmUserRepository";
 
-enum RepositoryType {Mock, MongoDb, Sequelize, Firebase, TypeOrm}
+export enum RepositoryType {Json, MongoDb, Sequelize, Firebase, TypeOrm}
 
-const REPOSITORY: RepositoryType = RepositoryType.TypeOrm;
+const REPOSITORY: RepositoryType = RepositoryType.MongoDb;
 
 export let taskRepository: ITaskRepository;
 export let userRepository: IUserRepository;
 
 function InitializeRepositories() {
     switch (REPOSITORY) {
-        case RepositoryType.Mock:
+        case RepositoryType.Json:
             // TODO: Get from root folder
             taskRepository = new JsonTaskRepository(path.join(__dirname, "../../_Shared/tasks.json"));
             userRepository = new JsonUserRepository(path.join(__dirname, "../../_Shared/users.json"));

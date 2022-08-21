@@ -9,6 +9,6 @@ export class JsonTaskRepository extends JsonBaseRepository<Task> implements ITas
     }
 
     getUserOf(id: string): Promise<User> {
-        return Promise.resolve(undefined);
+        return Promise.reject(new Error("Not implemented"));
     }
 }

@@ -34,7 +34,7 @@ export class MongoDbUserRepository extends MongoDbBaseRepository<User> implement
             // return Promise.resolve(user.toObject() as User); // this not work if User class has methods
             return Promise.resolve(user.toDto());
         }
-        // return Promise.resolve(undefined);
+        return Promise.reject(new Error("Invalid"));
     }
 
     async getTasksOf(id: string, filter: Partial<Task> = {}, paginator: IPaginator = {}, sorter: TaskSortDto = {}): Promise<Task[]> {

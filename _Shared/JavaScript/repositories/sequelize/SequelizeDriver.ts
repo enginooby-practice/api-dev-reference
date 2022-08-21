@@ -23,7 +23,7 @@ export class SequelizeDriver {
         const password = "password";
         const dialect = "mysql";
 
-        SequelizeDriver.sequelize = new Sequelize(db, username, password, {
+        SequelizeDriver.sequelize = new Sequelize(db as string, username, password, {
             host: host,
             dialect: dialect,
             port: 3306,

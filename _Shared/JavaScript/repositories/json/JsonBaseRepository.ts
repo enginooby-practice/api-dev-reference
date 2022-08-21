@@ -19,7 +19,7 @@ export class JsonBaseRepository<T extends IModel> extends CrudRepository<T> {
     }
 
     async getById(id: string): Promise<T> {
-        return Promise.resolve(this.entities.find(e => e.id == id));
+        return Promise.resolve(this.entities.find(e => e.id == id) as T);
     }
 
     async getAll(): Promise<T[]> {
@@ -32,6 +32,7 @@ export class JsonBaseRepository<T extends IModel> extends CrudRepository<T> {
         if (oldEntity) {
             // keep keys that new entity missing from the old entity
             const properties = Object.keys(oldEntity);
+            // @ts-ignore
             properties.forEach(prop => entity[prop] ??= oldEntity[prop])
 
             const index = this.entities.indexOf(oldEntity);
