@@ -2,10 +2,7 @@ import fs from "fs";
 import {IModel} from "../../models/base/IModel";
 import {CrudRepository} from "../base/CrudRepository";
 
-/**
- * Fake data from text file or in-memory database, used for testing.
- */
-export class MockBaseRepository<T extends IModel> extends CrudRepository<T> {
+export class JsonBaseRepository<T extends IModel> extends CrudRepository<T> {
     protected readonly entities: Array<T> = [];
 
     constructor(jsonPath: string) {

@@ -2,8 +2,8 @@
 import * as path from "path";
 import {ITaskRepository} from "./base/ITaskRepository";
 import {IUserRepository} from "./base/IUserRepository";
-import {MockTaskRepository} from "./mock/MockTaskRepository";
-import {MockUserRepository} from "./mock/MockUserRepository";
+import {JsonTaskRepository} from "./json/JsonTaskRepository";
+import {JsonUserRepository} from "./json/JsonUserRepository";
 import {MongoDbTaskRepository} from "./mongodb/MongoDbTaskRepository";
 import {MongoDbUserRepository} from "./mongodb/MongoDbUserRepository";
 import {SequelizeTaskRepository} from "./sequelize/SequelizeTaskRepository";
@@ -15,7 +15,7 @@ import {TypeOrmUserRepository} from "./typeorm/TypeOrmUserRepository";
 
 enum RepositoryType {Mock, MongoDb, Sequelize, Firebase, TypeOrm}
 
-const REPOSITORY: RepositoryType = RepositoryType.MongoDb;
+const REPOSITORY: RepositoryType = RepositoryType.TypeOrm;
 
 export let taskRepository: ITaskRepository;
 export let userRepository: IUserRepository;
@@ -24,8 +24,8 @@ function InitializeRepositories() {
     switch (REPOSITORY) {
         case RepositoryType.Mock:
             // TODO: Get from root folder
-            taskRepository = new MockTaskRepository(path.join(__dirname, "../../_Shared/tasks.json"));
-            userRepository = new MockUserRepository(path.join(__dirname, "../../_Shared/users.json"));
+            taskRepository = new JsonTaskRepository(path.join(__dirname, "../../_Shared/tasks.json"));
+            userRepository = new JsonUserRepository(path.join(__dirname, "../../_Shared/users.json"));
             break;
         case RepositoryType.MongoDb:
             taskRepository = new MongoDbTaskRepository();
