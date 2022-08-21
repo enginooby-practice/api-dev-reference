@@ -9,7 +9,7 @@ import {Repository} from "typeorm";
 import {TaskSortDto} from "../../models/task/TaskSortDto";
 
 export class TypeOrmUserRepository extends TypeOrmBaseRepository<User> implements IUserRepository {
-    protected getTypeOrmRepository(): Repository<any> {
+    public getTypeOrmRepository(): Repository<any> {
         return TypeOrmDriver.dataSource.getRepository(TypeOrmUser);
     }
 

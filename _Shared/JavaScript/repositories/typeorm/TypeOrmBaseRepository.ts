@@ -5,7 +5,7 @@ import {Repository} from "typeorm";
 import {IUpdateDto} from "../../models/base/IDto";
 
 export abstract class TypeOrmBaseRepository<T extends IModel> extends CrudRepository<T> {
-    protected abstract getTypeOrmRepository(): Repository<any>;
+    public abstract getTypeOrmRepository(): Repository<any>;
 
     constructor() {
         super();
@@ -50,6 +50,8 @@ export abstract class TypeOrmBaseRepository<T extends IModel> extends CrudReposi
     }
 
     async getAll(): Promise<T[]> {
+        // FIX: "this" is undefined in MarbleJS
+        // temp - define override method in TypeOrmTaskRepository
         const repoEntities = await this.getTypeOrmRepository().find();
         const entities: T[] = [];
 

@@ -7,7 +7,22 @@ import {TypeOrmTask} from "./TypeOrmTask";
 import {Repository} from "typeorm";
 
 export class TypeOrmTaskRepository extends TypeOrmBaseRepository<Task> implements ITaskRepository {
-    protected getTypeOrmRepository(): Repository<any> {
+    async getAll(): Promise<Task[]> {
+        let repoEntities;
+
+        if (this) {
+            repoEntities = await this.getTypeOrmRepository().find();
+        } else {
+            repoEntities = await new TypeOrmTaskRepository().getTypeOrmRepository().find();
+        }
+        const entities: Task[] = [];
+
+        repoEntities.forEach(e => entities.push(e as Task));
+
+        return Promise.resolve(entities);
+    }
+
+    public getTypeOrmRepository(): Repository<any> {
         return TypeOrmDriver.dataSource.getRepository(TypeOrmTask);
     }
 

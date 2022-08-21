@@ -1,7 +1,7 @@
 import {IModel} from "../base/IModel";
 import {IUpdateDto} from "../base/IDto";
 
-export class Task implements IModel {
+export class Task implements IModel, IUpdateDto<Task> {
     id: string;
     title: string;
     status: TaskStatus;
@@ -11,7 +11,12 @@ export class Task implements IModel {
     tags: string[];
     ownerId: any;
 
-    applyUpdate(dto: IUpdateDto<Task>): void {
+    applyUpdate(dto: Task): void {
+        this.title = dto.title ?? this.title;
+        this.status = dto.status ?? this.status;
+        this.isArchived = dto.isArchived ?? this.isArchived;
+        this.priority = dto.priority ?? this.priority;
+        this.tags = dto.tags ?? this.tags;
     }
 }
 

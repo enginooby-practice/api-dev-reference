@@ -18,6 +18,8 @@ export class TypeOrmTask extends Task {
     @Column()
     priority: number;
 
-    @Column()
+    @Column({
+        nullable: true,
+    })
     ownerId: string;
 }
