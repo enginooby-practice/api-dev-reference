@@ -1,8 +1,10 @@
-import * as Koa from "koa";
-import * as Router from "koa-router";
+import Koa from "koa";
+import koaBody from "koa-body";
+import {taskRouter} from "./routers/taskRouter";
 
 const app = new Koa();
-const router = new Router();
+
+app.use(koaBody());
 
 // logger
 app.use(async (ctx, next) => {
@@ -19,11 +21,8 @@ app.use(async (ctx, next) => {
     ctx.set('X-Response-Time', `${ms}ms`);
 });
 
-router.get("/", async (context: Koa.Context) => {
-    context.body = "Hello, KoaJS!";
-});
+app.use(taskRouter.routes());
 
-app.use(router.routes());
 app.listen(6969, () => {
     console.log("Server running on port 6969");
 });
