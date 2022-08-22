@@ -1,32 +1,27 @@
-import fs from "fs";
-import { IModel } from "../../models/base/IModel";
-import { CrudRepository } from "../base/CrudRepository";
+import { Task } from "../models/Task.ts";
 
-export class JsonBaseRepository<T extends IModel> extends CrudRepository<T> {
-  protected readonly entities: Array<T> = [];
+class JsonTaskRepository {
+  private entities: Task[];
 
-  constructor(jsonPath: string) {
-    super();
-
-    const dataJson = fs.readFileSync(jsonPath, 'utf-8');
-    const data: Array<any> = JSON.parse(dataJson);
-    data.forEach(entityObj => this.entities.push(entityObj));
+  constructor() {
+    this.entities = <Task[]>JSON.parse(Deno.readTextFileSync("./tasks.json"))
   }
 
-  async create(entity: T): Promise<T> {
-    this.entities.push(entity);
-    return await Promise.resolve(entity);
-  }
-
-  async getById(id: string): Promise<T> {
-    return await Promise.resolve(this.entities.find(e => e.id == id) as T);
-  }
-
-  async getAll(): Promise<T[]> {
+  async getAll(): Promise<Task[]> {
     return await Promise.resolve(this.entities);
   }
 
-  async update(id: string, entity: T): Promise<boolean> {
+  async getById(id: string): Promise<Task> {
+    return await Promise.resolve(this.entities.find(e => e.id == id) as Task);
+  }
+
+  async create(entity: Task) {
+    this.entities.push(entity);
+
+    return await Promise.resolve(entity);
+  }
+
+  async update(id: string, entity: Task): Promise<boolean> {
     const oldEntity = await this.getById(id);
 
     if (oldEntity) {
@@ -63,3 +58,5 @@ export class JsonBaseRepository<T extends IModel> extends CrudRepository<T> {
     return await Promise.resolve(true);
   }
 }
+
+export const taskRepository = new JsonTaskRepository();

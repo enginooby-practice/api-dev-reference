@@ -1,0 +1,46 @@
+[
+  {
+    "id": "1",
+    "ownerId": "1",
+    "title": "Todo #1",
+    "status": "Not started",
+    "isArchived": false,
+    "priority": 1,
+    "image": "",
+    "tags": [
+      "tag1",
+      "tag2"
+    ],
+    "createAt": "01/08/2022",
+    "updateAt": "01/08/2022"
+  },
+  {
+    "id": "2",
+    "ownerId": "1",
+    "title": "Todo #2",
+    "status": "In progress",
+    "isArchived": false,
+    "priority": 2,
+    "image": "",
+    "tags": [
+      "tag2"
+    ],
+    "createAt": "02/08/2022",
+    "updateAt": "02/08/2022"
+  },
+  {
+    "id": "3",
+    "ownerId": "2",
+    "title": "Todo #3",
+    "status": "Completed",
+    "isArchived": true,
+    "priority": 1,
+    "image": "",
+    "tags": [
+      "tag1",
+      "tag3"
+    ],
+    "createAt": "03/08/2022",
+    "updateAt": "03/08/2022"
+  }
+]
