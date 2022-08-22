@@ -1,0 +1,11 @@
+{
+  "name": "hono",
+  "module": "index.ts",
+  "type": "module",
+  "dependencies": {
+    "hono": "^2.0.9"
+  },
+  "devDependencies": {
+    "bun-types": "^0.1.0"
+  }
+}
