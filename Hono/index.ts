@@ -1,7 +1,8 @@
-import { Hono } from 'hono'
+import { Hono } from 'hono';
+import taskRouter from './routers/taskRouter';
 
 const app = new Hono()
-app.get('/', (c) => c.text('Hello! Hono!'))
+app.route("/api/v1/tasks", taskRouter);
 
 export default {
   port: 6969,
